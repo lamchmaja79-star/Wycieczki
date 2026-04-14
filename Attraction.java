@@ -5,7 +5,7 @@ public class Attraction {
     private String category;
     private LocalTime open;
     private LocalTime closed;
-    private int durationMinutes; // czas zwiedzania [cite: 16]
+    private int durationMinutes; 
 
     public Attraction(String name, String category, LocalTime open, LocalTime closed, int durationMinutes) {
         this.name = name;
