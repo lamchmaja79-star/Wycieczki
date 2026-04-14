@@ -9,7 +9,7 @@ public class TripSchedule {
     }
 
     public void addToPlan(Attraction a) {
-        selectedAttractions.add(a); // [cite: 12]
+        selectedAttractions.add(a); 
     }
 
     public void printSchedule();
