@@ -1,13 +1,15 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.w3c.dom.Attr;
 
+import java.time.LocalTime;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class AttractionTest {
 
     @BeforeEach
     void setUp() {
-        attraction = new Attraction("Kino Kijów", "entertainment")
+        Attraction attraction = new Attraction("Kino Kijów", "entertainment", LocalTime.of(9,0),LocalTime);
     }
 
     @org.junit.jupiter.api.Test
