@@ -9,7 +9,8 @@ public class TripSchedule {
     }
 
     public void addToPlan(Attraction a) {
-        selectedAttractions.add(a); 
+        selectedAttractions.add(a);
     }
 
-    public void printSchedule();
+    public void printSchedule(){};
+}

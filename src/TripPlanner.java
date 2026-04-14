@@ -5,11 +5,11 @@ import java.util.stream.Collectors;
 public class TripPlanner {
     private List<Attraction> allAttractions;
 
-    public TripPlanner(){
+    public TripPlanner() {
         this.allAttractions = new ArrayList<>();
     }
 
-    public void addAttraction(Attraction a){
+    public void addAttraction(Attraction a) {
         allAttractions.add(a);
     }
 
@@ -18,4 +18,6 @@ public class TripPlanner {
     }
 
     public List<Attraction> filterByCategory(String category) {
+        return null;
+    }
 }
