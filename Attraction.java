@@ -14,8 +14,6 @@ public class Attraction {
         this.closed = closed;
         this.durationMinutes = durationMinutes;
     }
-
-    // Gettery (potrzebne do filtrowania i harmonogramu)
     public String getName() {
         return name;
     }
