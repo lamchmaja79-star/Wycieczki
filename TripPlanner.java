@@ -18,8 +18,4 @@ public class TripPlanner {
     }
 
     public List<Attraction> filterByCategory(String category) {
-        return allAttractions.stream()
-                .filter(a -> a.getCategory().equalsIgnoreCase(category))
-                .collect(Collectors.toList()); // [cite: 13]
-    }
 }
