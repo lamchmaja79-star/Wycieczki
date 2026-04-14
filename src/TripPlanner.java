@@ -17,6 +17,15 @@ public class TripPlanner {
     }
 
     public List<Attraction> filterByCategory(String category) {
-        return null;
+        List<Attraction> filtered = new ArrayList<>();
+
+        for (Attraction a : allAttractions) {
+            if (a.getCategory().equals(category)) {
+                filtered.add(a);
+            }
+        }
+        return filtered;
     }
+
+
 }
