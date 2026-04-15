@@ -21,6 +21,7 @@ class TripScheduleTest {
     void constructor() {
         assertNotNull(tripSchedule.getSelectedAttractions(), "Konstruktor powinien tworzyć listę");
         assertTrue(tripSchedule.getSelectedAttractions().isEmpty(), "Konstruktor powinien tworzyć pustą listę");
+
     }
     @Test
     void addToPlan() {
