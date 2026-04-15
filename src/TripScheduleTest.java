@@ -22,5 +22,25 @@ class TripScheduleTest {
         assertNotNull(tripSchedule.getSelectedAttractions(), "Konstruktor powinien tworzyć listę");
         assertTrue(tripSchedule.getSelectedAttractions().isEmpty(), "Konstruktor powinien tworzyć pustą listę");
     }
-
+    @Test
+    void addToPlan() {
+        tripSchedule.addToPlan(a1);
+        assertEquals(1, tripSchedule.getSelectedAttractions().size());
+        assertTrue(tripSchedule.getSelectedAttractions().contains(a1));
+        tripSchedule.addToPlan(a1);
+        assertEquals(1, tripSchedule.getSelectedAttractions().size());
+        tripSchedule.addToPlan(a2);
+        assertEquals(2, tripSchedule.getSelectedAttractions().size());
+        assertTrue(tripSchedule.getSelectedAttractions().contains(a2) && tripSchedule.getSelectedAttractions().contains(a1));
+    }
+    @Test
+    void getSelectedAttractions() {
+        tripSchedule.addToPlan(a1);
+        tripSchedule.addToPlan(a2);
+        tripSchedule.addToPlan(a3);
+        assertEquals(3, tripSchedule.getSelectedAttractions().size());
+        assertTrue(tripSchedule.getSelectedAttractions().contains(a1));
+        assertTrue(tripSchedule.getSelectedAttractions().contains(a2));
+        assertTrue(tripSchedule.getSelectedAttractions().contains(a3));
+    }
 }

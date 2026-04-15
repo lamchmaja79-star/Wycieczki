@@ -25,21 +25,26 @@ class TripPlannerTest {
     }
 
     @Test
-    void addAttraction_shouldNotAddDuplicate() {
+    void addAttraction() {
         tripPlanner.addAttraction(a1);
         assertEquals(1, tripPlanner.getAllAttractions().size());
         assertTrue(tripPlanner.getAllAttractions().contains(a1));
         tripPlanner.addAttraction(a1);
         assertEquals(1, tripPlanner.getAllAttractions().size());
+        tripPlanner.addAttraction(a2);
+        assertEquals(2, tripPlanner.getAllAttractions().size());
+        assertTrue(tripPlanner.getAllAttractions().contains(a1) && tripPlanner.getAllAttractions().contains(a2));
     }
 
     @Test
     void getAllAttractions() {
         tripPlanner.addAttraction(a1);
         tripPlanner.addAttraction(a2);
-        assertEquals(2, tripPlanner.getAllAttractions().size());
+        tripPlanner.addAttraction(a3);
+        assertEquals(3, tripPlanner.getAllAttractions().size());
         assertTrue(tripPlanner.getAllAttractions().contains(a1));
         assertTrue(tripPlanner.getAllAttractions().contains(a2));
+        assertTrue(tripPlanner.getAllAttractions().contains(a3));
     }
 
     @Test
