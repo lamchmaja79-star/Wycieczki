@@ -49,4 +49,11 @@ public class Attraction {
     public int  hashCode() {
         return Objects.hash(name, category, open, closed, durationMinutes);
     }
+
+    public boolean isOpen(LocalTime time){
+        if(time.isAfter(open) && time.isBefore(closed.minusMinutes(durationMinutes)) ){
+            return true;
+        }
+        return false;
+    }
 }

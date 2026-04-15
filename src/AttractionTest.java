@@ -73,4 +73,11 @@ class AttractionTest {
         Attraction a1 = new Attraction("Muzeum Narodowe", "history", LocalTime.of(9, 0), LocalTime.of(20,0), 120);
         assertNotEquals(attraction.hashCode(), a1.hashCode());
     }
+
+    @Test
+    void isOpen(){
+        assertTrue(attraction.isOpen(LocalTime.of(10, 0)));
+        assertFalse(attraction.isOpen(LocalTime.of(21, 59)));
+        assertFalse(attraction.isOpen(LocalTime.of(23, 0)));
+    }
 }
