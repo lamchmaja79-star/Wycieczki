@@ -2,17 +2,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class TripScheduleTest {
     private TripSchedule  tripSchedule;
+    List<Categories> category1;
+    List<Categories> category2;
     private Attraction a1;
     private Attraction a2;
     private Attraction a3;
     @BeforeEach
     void setUp() {
         tripSchedule = new TripSchedule();
+        category1 = new ArrayList<>();
+        category2 = new ArrayList<>();
+        category1.add(Categories.HISTORY);
+        category2.add(Categories.ENTERTAINMENT);
         a1 = new Attraction("Muzeum Narodowe", "history", LocalTime.of(9, 0), LocalTime.of(20,0), 120);
         a2 = new Attraction("Wawel", "history", LocalTime.of(10, 0), LocalTime.of(22,0), 45);
         a3 = new Attraction("Kino", "entertainment", LocalTime.of(9, 0), LocalTime.of(20,0), 100);

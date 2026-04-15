@@ -1,8 +1,22 @@
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Objects;
 
+enum Categories {
+    HISTORY,
+    ENTERTAINMENT,
+    ART,
+    SPORT,
+    HARDCORE,
+    RECREATION,
+    DINING,
+    WELLNESS,
+    SOUVENIER;
+
+}
 public class Attraction {
     private String name;
+    private List<Categories> categoryList;
     private String category;
     private LocalTime open;
     private LocalTime closed;
@@ -33,6 +47,7 @@ public class Attraction {
         return String.format("%s: %s, open: %s, closed: %s, czas trwania: %d min",
                 category.toUpperCase(), name, open, closed, durationMinutes);
     }
+
 
     @Override
     public boolean equals(Object o) {
