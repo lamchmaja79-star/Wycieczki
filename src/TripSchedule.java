@@ -9,8 +9,17 @@ public class TripSchedule {
     }
 
     public void addToPlan(Attraction a) {
-        selectedAttractions.add(a);
+        if (!selectedAttractions.contains(a)) {
+            selectedAttractions.add(a);
+        }
+    }
+    public List<Attraction> getSelectedAttractions() {
+        return selectedAttractions;
     }
 
-    public void printSchedule(){};
+    public void createSchedule(){
+        for(Attraction a : selectedAttractions){
+            System.out.println(a);
+        }
+    };
 }
