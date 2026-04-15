@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TripPlanner {
     private List<Attraction> allAttractions;
@@ -9,7 +10,9 @@ public class TripPlanner {
     }
 
     public void addAttraction(Attraction a) {
-        allAttractions.add(a);
+        if (!allAttractions.contains(a)) {
+            allAttractions.add(a);
+        }
     }
 
     public List<Attraction> getAllAttractions() {
@@ -26,6 +29,5 @@ public class TripPlanner {
         }
         return filtered;
     }
-
 
 }
