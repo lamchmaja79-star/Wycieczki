@@ -1,4 +1,5 @@
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Attraction {
     private String name;
@@ -31,5 +32,21 @@ public class Attraction {
     public String toString() {
         return String.format(
                 category.toUpperCase(), name, open, closed, durationMinutes);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if(this == o) return true;
+        if(!(o instanceof Attraction)) return false;
+        Attraction other = (Attraction) o;
+        return durationMinutes == other.durationMinutes &&
+                Objects.equals(name, other.name) &&
+                Objects.equals(category, other.category) &&
+                Objects.equals(open, other.open) &&
+                Objects.equals(closed, other.closed);
+    }
+    @Override
+    public int  hashCode() {
+        return Objects.hash(name, category, open, closed, durationMinutes);
     }
 }
