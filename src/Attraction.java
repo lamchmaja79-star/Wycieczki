@@ -2,18 +2,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
-enum Categories {
-    HISTORY,
-    ENTERTAINMENT,
-    ART,
-    SPORT,
-    HARDCORE,
-    RECREATION,
-    DINING,
-    WELLNESS,
-    SOUVENIER;
 
-}
 public class Attraction {
     private String name;
     private List<Categories> categoryList;
