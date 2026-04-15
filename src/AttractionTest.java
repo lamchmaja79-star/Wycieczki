@@ -41,9 +41,6 @@ class AttractionTest {
     @Test
     void testToString() {
         String result = attraction.toString();
-
-        assertTrue(result.contains("Kino Kijów"));
-        assertTrue(result.contains("ENTERTAINMENT"));
+        assertEquals("ENTERTAINMENT: Kino Kijów, open: 09:00, closed: 22:00, czas trwania: 2 min", result);
     }
-
 }

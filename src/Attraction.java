@@ -30,7 +30,7 @@ public class Attraction {
 
     @Override
     public String toString() {
-        return String.format(
+        return String.format("%s: %s, open: %s, closed: %s, czas trwania: %d min",
                 category.toUpperCase(), name, open, closed, durationMinutes);
     }
 
