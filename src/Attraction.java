@@ -6,24 +6,25 @@ import java.util.Objects;
 public class Attraction {
     private String name;
     private List<Categories> categoryList;
-    private String category;
     private LocalTime open;
     private LocalTime closed;
     private int durationMinutes;
+    private Location location;
 
-    public Attraction(String name, String category, LocalTime open, LocalTime closed, int durationMinutes) {
+    public Attraction(String name, List<Categories> categoryList, LocalTime open, LocalTime closed, int durationMinutes, Location location) {
         this.name = name;
-        this.category = category;
+        this.categoryList = categoryList;
         this.open = open;
         this.closed = closed;
         this.durationMinutes = durationMinutes;
+        this.location = location;
     }
     public String getName() {
         return name;
     }
 
-    public String getCategory() {
-        return category;
+    public List<Categories> getCategoryList() {
+        return categoryList;
 
     }
     public LocalTime getOpen() { return open; }
@@ -31,10 +32,16 @@ public class Attraction {
     public int getDurationMinutes(){
         return durationMinutes; }
 
+    public Location getLocation() { return location; }
+
     @Override
     public String toString() {
+        String categoriesString = "";
+        for( Categories c : categoryList){
+            categoriesString += c.toString() + "\n";
+        }
         return String.format("%s: %s, open: %s, closed: %s, czas trwania: %d min",
-                category.toUpperCase(), name, open, closed, durationMinutes);
+                categoriesString, name, open, closed, durationMinutes);
     }
 
 
@@ -45,19 +52,17 @@ public class Attraction {
         Attraction other = (Attraction) o;
         return durationMinutes == other.durationMinutes &&
                 Objects.equals(name, other.name) &&
-                Objects.equals(category, other.category) &&
+                Objects.equals(categoryList, other.categoryList) &&
                 Objects.equals(open, other.open) &&
                 Objects.equals(closed, other.closed);
     }
     @Override
     public int  hashCode() {
-        return Objects.hash(name, category, open, closed, durationMinutes);
+        return Objects.hash(name, categoryList, open, closed, durationMinutes);
     }
 
-    public boolean isOpen(LocalTime time){
-        if(time.isAfter(open) && time.isBefore(closed.minusMinutes(durationMinutes)) ){
-            return true;
-        }
-        return false;
+    public boolean isOpen(LocalTime time) {
+        LocalTime latestStart = closed.minusMinutes(durationMinutes);
+        return !time.isBefore(open) && !time.isAfter(latestStart);
     }
 }

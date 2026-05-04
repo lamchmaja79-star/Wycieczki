@@ -9,23 +9,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AttractionTest {
     private Attraction attraction;
-    List<Categories> category;
+    List<Categories> categoryList;
+    Location location;
+
     @BeforeEach
     void setUp() {
-        category = new ArrayList<>();
-        category.add(Categories.ENTERTAINMENT);
-        attraction = new Attraction("Kino Kijów", "entertainment", LocalTime.of(9,0),LocalTime.of(22,0), 2);
+        categoryList = new ArrayList<>();
+        categoryList.add(Categories.ENTERTAINMENT);
+        location = new Location(10,11);
+
+
+        attraction = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,0),LocalTime.of(22,0), 2, location);
     }
 
     @Test
     void getName() {
-
         assertEquals("Kino Kijów", attraction.getName());
     }
 
     @Test
-    void getCategory() {
-        assertEquals("entertainment", attraction.getCategory());
+    void getCategoryList() {
+        assertEquals(categoryList , attraction.getCategoryList());
     }
 
     @Test
@@ -44,6 +48,9 @@ class AttractionTest {
     }
 
     @Test
+    public void getLocation() { assertEquals(location, attraction.getLocation()); }
+
+    @Test
     void testToString() {
         String result = attraction.toString();
         assertEquals("ENTERTAINMENT: Kino Kijów, open: 09:00, closed: 22:00, czas trwania: 2 min", result);
@@ -52,32 +59,32 @@ class AttractionTest {
     @Test
     void testEquals() {
         //takie same
-        Attraction attraction_copy = new Attraction("Kino Kijów", "entertainment", LocalTime.of(9,0),LocalTime.of(22,0), 2);
+        Attraction attraction_copy = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,0),LocalTime.of(22,0), 2, location);
         assertEquals(attraction, attraction_copy);
         //różne nazwy
-        Attraction a1 = new Attraction("Kino", "entertainment", LocalTime.of(9,0),LocalTime.of(22,0), 2);
+        Attraction a1 = new Attraction("Kino", categoryList , LocalTime.of(9,0),LocalTime.of(22,0), 2,location);
         assertNotEquals(a1, attraction, "equals should return false for different names");
         //różne kategorie
         List<Categories> category2 =  new ArrayList<>();
         category2.add(Categories.HISTORY);
-        Attraction a2 = new Attraction("Kino Kijów", "history", LocalTime.of(9,0),LocalTime.of(22,0), 2);
+        Attraction a2 = new Attraction("Kino Kijów", category2, LocalTime.of(9,0),LocalTime.of(22,0), 2,location);
         assertNotEquals(a2, attraction, "equals should return false for different categories");
         //różne czasy otwarcia
-        Attraction a3 = new Attraction("Kino Kijów","entertainment", LocalTime.of(9,30),LocalTime.of(22,0), 2);
+        Attraction a3 = new Attraction("Kino Kijów",categoryList, LocalTime.of(9,30),LocalTime.of(22,0), 2, location);
         assertNotEquals(a3, attraction, "equals should return false for different opening times");
         //różne czasy zamknięcia
-        Attraction a4 = new Attraction("Kino Kijów", "entertainment", LocalTime.of(9,0),LocalTime.of(20,0), 2);
+        Attraction a4 = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,0),LocalTime.of(20,0), 2, location);
         assertNotEquals(a4, attraction, "equals should return false for different closing times");
         //różny czas trwania
-        Attraction a5 = new Attraction("Kino Kijów", "entertainment", LocalTime.of(9,30),LocalTime.of(22,0), 200);
+        Attraction a5 = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,30),LocalTime.of(22,0), 200, location);
         assertNotEquals(a5, attraction, "equals should return false for different durations");
     }
 
     @Test
     void testHashCode() {
-        Attraction attraction_copy = new Attraction("Kino Kijów", "entertainment", LocalTime.of(9,0),LocalTime.of(22,0), 2);
+        Attraction attraction_copy = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,0),LocalTime.of(22,0), 2, location);
         assertEquals(attraction.hashCode(), attraction_copy.hashCode());
-        Attraction a1 = new Attraction("Muzeum Narodowe", "hiostory", LocalTime.of(9, 0), LocalTime.of(20,0), 120);
+        Attraction a1 = new Attraction("Muzeum Narodowe", categoryList, LocalTime.of(9, 0), LocalTime.of(20,0), 120, location);
         assertNotEquals(attraction.hashCode(), a1.hashCode());
     }
 

@@ -23,7 +23,7 @@ public class TripPlanner {
         List<Attraction> filtered = new ArrayList<>();
 
         for (Attraction a : allAttractions) {
-            if (a.getCategory().equals(category)) {
+            if (a.getCategoryList().equals(category)) {
                 filtered.add(a);
             }
         }
