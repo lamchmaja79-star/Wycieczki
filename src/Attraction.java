@@ -2,7 +2,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
-
 public class Attraction {
     private String name;
     private List<Categories> categoryList;
