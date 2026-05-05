@@ -33,6 +33,10 @@ public class Attraction {
 
     public Location getLocation() { return location; }
 
+    public int travelTime(Attraction attraction, int speed) {
+        return (int)this.location.getDistance(attraction.location)/speed;
+    }
+
     @Override
     public String toString() {
         String categoriesString = "";
