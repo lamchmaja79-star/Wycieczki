@@ -76,8 +76,8 @@ public class TripSchedule {
     }
 
     //metoda do napisania, ma sprawdzać czy możemy dodać daną atrakcję (czy zmieścimy się w określonym czasie)
-    public boolean verify(Attraction attraction, LocalTime currentTime) {
-        return true;
+    public boolean verify(Location startLocation,  Attraction attraction, LocalTime currentTime) {
+        return endTime.isAfter(currentTime.plusMinutes(getTimeOfAttraction(startLocation, attraction)));
     }
 
     public Attraction findFirstAttraction(Location location) {
@@ -97,7 +97,7 @@ public class TripSchedule {
         List<Attraction> schedual = new ArrayList<>();
         LocalTime currentTime = startTime;
         Attraction first = findFirstAttraction(startLocation);
-        if(verify(first,startTime)) {
+        if(verify(startLocation,first,startTime)) {
             schedual.add(first);
             deleteAttraction(first);
             currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first));
@@ -105,7 +105,7 @@ public class TripSchedule {
         Attraction prev = first;
         while(currentTime.isBefore(endTime)){
             Attraction next = findNearestNeighbour(prev);
-            if(verify(next,currentTime)) {
+            if(verify(prev.getLocation(),next,currentTime)) {
                 schedual.add(next);
                 currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next));
                 prev = next;
