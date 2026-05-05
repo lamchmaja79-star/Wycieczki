@@ -1,6 +1,7 @@
 public class Location {
     private double x;
     private double y;
+    private static final double SPEED = 0.833;
 
 
     public Location(double x, double y) {
@@ -28,6 +29,10 @@ public class Location {
         double x = this.x - other.x;
         double y = this.y - other.y;
         return Math.sqrt(x*x + y*y);
+    }
+
+    public int travelTime(Location other) {
+        return (int)(this.getDistance(other)/SPEED);
     }
 
     @Override

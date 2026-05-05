@@ -9,7 +9,7 @@ public class Attraction {
     private LocalTime closed;
     private int durationMinutes;
     private Location location;
-    private static final int SPEED = 800;
+
 
     public Attraction(String name, List<Categories> categoryList, LocalTime open, LocalTime closed, int durationMinutes, Location location) {
         this.name = name;
@@ -34,9 +34,7 @@ public class Attraction {
 
     public Location getLocation() { return location; }
 
-    public int travelTime(Attraction attraction) {
-        return (int)this.location.getDistance(attraction.location)/SPEED;
-    }
+
 
     @Override
     public String toString() {
