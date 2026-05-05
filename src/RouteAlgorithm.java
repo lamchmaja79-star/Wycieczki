@@ -4,6 +4,9 @@ import java.util.List;
 public class RouteAlgorithm {
     private List<Attraction> attractions;
 
+    public RouteAlgorithm(List<Attraction> attractions) {
+        this.attractions = attractions;
+    }
     public Attraction findNearestNeighbour(Attraction prev, List<Attraction> availableAttractions) {
         Attraction closestNeighbour = availableAttractions.get(0);
         int bestTime = prev.travelTime(closestNeighbour)+closestNeighbour.getDurationMinutes();
@@ -18,8 +21,6 @@ public class RouteAlgorithm {
     }
 
     public List<Attraction> pathInOrder() {
-        List<Attraction> attractions = new ArrayList<Attraction>();
-
         return attractions;
     }
 }
