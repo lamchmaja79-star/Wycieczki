@@ -59,7 +59,7 @@ class TripPlannerTest {
         tripPlanner.addAttraction(a1);
         tripPlanner.addAttraction(a2);
         tripPlanner.addAttraction(a3);
-        List<Attraction> result = tripPlanner.filterByCategory("history");
+        List<Attraction> result = tripPlanner.filterByCategory(Categories.HISTORY);
         assertEquals(2, result.size());
         assertTrue(result.contains(a1));
         assertTrue(result.contains(a2));
@@ -70,7 +70,7 @@ class TripPlannerTest {
     void filterByCategory_notFoundMatch(){
         tripPlanner.addAttraction(a1);
         tripPlanner.addAttraction(a2);
-        List<Attraction> result = tripPlanner.filterByCategory("entertainment");
+        List<Attraction> result = tripPlanner.filterByCategory(Categories.ENTERTAINMENT);
         assertTrue(result.isEmpty());
     }
 

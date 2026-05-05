@@ -19,11 +19,10 @@ public class TripPlanner {
         return allAttractions;
     }
 
-    public List<Attraction> filterByCategory(String category) {
+    public List<Attraction> filterByCategory(Categories category) {
         List<Attraction> filtered = new ArrayList<>();
-
         for (Attraction a : allAttractions) {
-            if (a.getCategoryList().equals(category)) {
+            if(a.getCategoryList().contains(category)) {
                 filtered.add(a);
             }
         }
