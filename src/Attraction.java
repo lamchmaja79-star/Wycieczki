@@ -41,7 +41,7 @@ public class Attraction {
     public String toString() {
         String categoriesString = "";
         for( Categories c : categoryList){
-            categoriesString += c.toString() + "\n";
+            categoriesString += c.toString() ;
         }
         return String.format("%s: %s, open: %s, closed: %s, czas trwania: %d min",
                 categoriesString, name, open, closed, durationMinutes);
