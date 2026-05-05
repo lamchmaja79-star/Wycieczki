@@ -96,7 +96,13 @@ public class TripSchedule {
     //dokończyć
     public List<Attraction> createSchedual() {
         List<Attraction> schedual = new ArrayList<>();
+        LocalTime currentTime = startTime;
         Attraction first = findFirstAttraction(startLocation);
+        if(verify(first,startTime)) {
+            schedual.add(first);
+            deleteAttraction(first);
+            currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first));
+        }
         for(Attraction a : selectedAttractions){
 
         }
