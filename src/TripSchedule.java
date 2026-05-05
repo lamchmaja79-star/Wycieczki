@@ -93,7 +93,6 @@ public class TripSchedule {
         return bestAttraction;
     }
 
-    //dokończyć
     public List<Attraction> createSchedual() {
         List<Attraction> schedual = new ArrayList<>();
         LocalTime currentTime = startTime;
@@ -103,8 +102,16 @@ public class TripSchedule {
             deleteAttraction(first);
             currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first));
         }
-        for(Attraction a : selectedAttractions){
-
+        Attraction prev = first;
+        while(currentTime.isBefore(endTime)){
+            Attraction next = findNearestNeighbour(prev);
+            if(verify(next,currentTime)) {
+                schedual.add(next);
+                currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next));
+                prev = next;
+            }else{
+                break; //nie wiem jak do końca tą pętlę dodać więc na razie robię break
+            }
         }
         return schedual;
     }
