@@ -35,4 +35,6 @@ public class TripPlanner {
         filtered.sort(Comparator.comparingInt(Attraction::getDurationMinutes));
     return filtered;
     }
+
+
 }

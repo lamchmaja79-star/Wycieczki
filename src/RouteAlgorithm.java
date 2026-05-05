@@ -5,9 +5,14 @@ public class RouteAlgorithm {
     private List<Attraction> attractions;
 
     public Attraction findNearestNeighbour(Attraction prev, List<Attraction> availableAttractions) {
-        Attraction closestNeighbour = null;
+        Attraction closestNeighbour = availableAttractions.get(0);
+        int bestTime = prev.travelTime(closestNeighbour)+closestNeighbour.getDurationMinutes();
         for(Attraction a : availableAttractions) {
-            prev.getLocation().getDistance(a.getLocation());
+            int time = prev.travelTime(a)+a.getDurationMinutes();
+            if(time < bestTime) {
+                bestTime = time;
+                closestNeighbour = a;
+            }
         }
         return closestNeighbour;
     }
