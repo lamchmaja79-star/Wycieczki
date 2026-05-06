@@ -7,5 +7,5 @@ enum Categories {
     RECREATION,
     DINING,
     WELLNESS,
-    SOUVENIR
+    //SOUVENIR
 }
