@@ -90,7 +90,7 @@ public class UserInterface extends Application {
                 entertainment,
                 art,
                 sport,
-                hardcore,
+                hardcore, 
                 recreation,
                 dining,
                 wellness
