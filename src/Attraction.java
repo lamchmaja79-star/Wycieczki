@@ -19,6 +19,7 @@ public class Attraction {
         this.durationMinutes = durationMinutes;
         this.location = location;
     }
+
     public String getName() {
         return name;
     }
@@ -27,14 +28,15 @@ public class Attraction {
         return categoryList;
 
     }
+
     public LocalTime getOpen() { return open; }
+
     public LocalTime getClosed() { return closed; }
+
     public int getDurationMinutes(){
         return durationMinutes; }
 
     public Location getLocation() { return location; }
-
-
 
     @Override
     public String toString() {
@@ -45,7 +47,6 @@ public class Attraction {
         return String.format("%s: %s, open: %s, closed: %s, czas trwania: %d min",
                 categoriesString, name, open, closed, durationMinutes);
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -58,6 +59,7 @@ public class Attraction {
                 Objects.equals(open, other.open) &&
                 Objects.equals(closed, other.closed);
     }
+
     @Override
     public int  hashCode() {
         return Objects.hash(name, categoryList, open, closed, durationMinutes);

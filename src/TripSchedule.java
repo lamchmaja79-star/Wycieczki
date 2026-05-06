@@ -1,3 +1,5 @@
+import org.w3c.dom.Attr;
+
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +11,9 @@ public class TripSchedule {
     private static LocalTime DEFAULT_START_TIME = LocalTime.of(8, 0);
     private static LocalTime DEFAULT_END_TIME =  LocalTime.of(22, 0);
     private Location startLocation;
-    private static Location DEFAULT_START_LOCATION;
+    ////dalam (0,0) ale jestem open
+    /// mozemy tez zaczynac od konkretnego miesjca typu dworzec PKP(i to by moglo byc akurat niezle)
+    private static Location DEFAULT_START_LOCATION = new Location(0.0, 0.0);
 
     public TripSchedule(LocalTime startTime, LocalTime endTime,  Location startLocation) {
         if(startTime.isAfter(endTime)){
@@ -20,6 +24,7 @@ public class TripSchedule {
         this.endTime = endTime;
         this.startLocation = startLocation;
     }
+
     public TripSchedule() {
         this(DEFAULT_START_TIME, DEFAULT_END_TIME, DEFAULT_START_LOCATION);
     }
@@ -29,6 +34,7 @@ public class TripSchedule {
             selectedAttractions.add(a);
         }
     }
+
     public List<Attraction> getSelectedAttractions() {
         return selectedAttractions;
     }
@@ -59,11 +65,11 @@ public class TripSchedule {
         return startingLocation.travelTime(attraction.getLocation()) + attraction.getDurationMinutes();
     }
 
-    public Attraction findNearestNeighbour(Attraction prev) {
-        Attraction closestNeighbour = selectedAttractions.getFirst();
-        if(prev.equals(closestNeighbour)) { closestNeighbour = selectedAttractions.get(1); }
+    public Attraction findNearestNeighbour(Attraction prev, List<Attraction> attractions) {
+        Attraction closestNeighbour = attractions.getFirst();
+        if(prev.equals(closestNeighbour)) { closestNeighbour = attractions.get(1); }
         int bestTime = getTimeOfAttraction(prev.getLocation(), closestNeighbour);
-        for(Attraction a : selectedAttractions) {
+        for(Attraction a : attractions) {
             if(!(a.equals(prev))) {
                 int time = getTimeOfAttraction(prev.getLocation(), a);
                 if (time < bestTime) {
@@ -80,10 +86,10 @@ public class TripSchedule {
         return endTime.isAfter(currentTime.plusMinutes(getTimeOfAttraction(startLocation, attraction)));
     }
 
-    public Attraction findFirstAttraction(Location location) {
+    public Attraction findFirstAttraction(Location location, List<Attraction> attractions) {
         int bestTime = Integer.MAX_VALUE;
-        Attraction bestAttraction = selectedAttractions.getFirst();
-        for(Attraction a : selectedAttractions) {
+        Attraction bestAttraction = attractions.getFirst();
+        for(Attraction a : attractions) {
             int time = getTimeOfAttraction(location, a);
             if(time < bestTime) {
                 bestTime = time;
@@ -93,26 +99,39 @@ public class TripSchedule {
         return bestAttraction;
     }
 
-    public List<Attraction> createSchedual() {
-        List<Attraction> schedual = new ArrayList<>();
+    public List<Attraction> createSchedule() {
+        List<Attraction> schedule = new ArrayList<>();
+        List<Attraction> temporary = new ArrayList<>(selectedAttractions);
+        //lepiej na kopii niz oryginalnej bo jak bedziemy chcialy pozniej wypisac liste to bedzie pusta
+        //skoro usuwamy te elementy i nie bedziemy mogly wyswietlic jej w interfejsie
+
         LocalTime currentTime = startTime;
-        Attraction first = findFirstAttraction(startLocation);
+        Location currentLocation = startLocation;
+
+        Attraction first = findFirstAttraction(currentLocation,temporary);
+
         if(verify(startLocation,first,startTime)) {
-            schedual.add(first);
-            deleteAttraction(first);
+            schedule.add(first);
+            temporary.remove(first);
             currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first));
+            currentLocation = first.getLocation();
         }
+
         Attraction prev = first;
-        while(currentTime.isBefore(endTime)){
-            Attraction next = findNearestNeighbour(prev);
+
+        while(currentTime.isBefore(endTime) && temporary.size() != 0){
+            Attraction next = findNearestNeighbour(prev, temporary);
+
             if(verify(prev.getLocation(),next,currentTime)) {
-                schedual.add(next);
+                schedule.add(next);
                 currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next));
+                temporary.remove(next);
                 prev = next;
-            }else{
+            }
+            else {
                 break; //nie wiem jak do końca tą pętlę dodać więc na razie robię break
             }
         }
-        return schedual;
+        return schedule;
     }
 }
