@@ -63,11 +63,12 @@ public class TripSchedule {
         return startingLocation.travelTime(attraction.getLocation()) + attraction.getDurationMinutes();
     }
 
-    public Attraction findNearestNeighbour(Attraction prev, List<Attraction> attractions) {
+    public Attraction findNearestNeighbour(Attraction prev, List<Attraction> attractions, LocalTime currentTime) {
         Attraction closestNeighbour = null;
         int bestTime = Integer.MAX_VALUE;
         for(Attraction a : attractions) {
             if(!(a.equals(prev))) {
+                if (!(verify(prev.getLocation(), a, currentTime))) continue;
                 int time = getTimeOfAttraction(prev.getLocation(), a);
                 if (time < bestTime) {
                     bestTime = time;
@@ -78,15 +79,21 @@ public class TripSchedule {
         return closestNeighbour;
     }
 
-    //metoda do napisania, ma sprawdzać czy możemy dodać daną atrakcję (czy zmieścimy się w określonym czasie)
-    public boolean verify(Location startLocation,  Attraction attraction, LocalTime currentTime) {
-        return endTime.isAfter(currentTime.plusMinutes(getTimeOfAttraction(startLocation, attraction)));
+    //metoda do napisania, ma sprawdzać czy możemy dodać daną atrakcję (czy zmieścimy się w określonym czasie) + czy jest otwarta
+    public boolean verify(Location startLocation, Attraction attraction, LocalTime currentTime) {
+        LocalTime arrivalTime = currentTime.plusMinutes(startLocation.travelTime(attraction.getLocation()));
+
+        return attraction.isOpen(arrivalTime) && endTime.isAfter(arrivalTime.plusMinutes(attraction.getDurationMinutes()));
     }
 
-    public Attraction findFirstAttraction(Location location, List<Attraction> attractions) {
+    public Attraction findFirstAttraction(Location location, List<Attraction> attractions, LocalTime currentTime) {
         int bestTime = Integer.MAX_VALUE;
-        Attraction bestAttraction = attractions.getFirst();
+        Attraction bestAttraction = null;
         for(Attraction a : attractions) {
+            int travelTime = location.travelTime(a.getLocation());
+            LocalTime arrival = currentTime.plusMinutes(travelTime);
+            if(!a.isOpen(arrival)) continue;
+            if(arrival.plusMinutes(a.getDurationMinutes()).isAfter(endTime)) continue;
             int time = getTimeOfAttraction(location, a);
             if(time < bestTime) {
                 bestTime = time;
@@ -105,29 +112,21 @@ public class TripSchedule {
         LocalTime currentTime = startTime;
         Location currentLocation = startLocation;
 
-        Attraction first = findFirstAttraction(currentLocation,temporary);
-
-        if(verify(startLocation,first,startTime)) {
-            schedule.add(first);
-            temporary.remove(first);
-            currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first));
-            currentLocation = first.getLocation();
-        }
-
+        Attraction first = findFirstAttraction(currentLocation,temporary, currentTime);
+        if (first == null) return schedule;
+        schedule.add(first);
+        temporary.remove(first);
+        currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first));
         Attraction prev = first;
 
-        while(currentTime.isBefore(endTime) && temporary.size() != 0){
-            Attraction next = findNearestNeighbour(prev, temporary);
+        while(currentTime.isBefore(endTime) && !temporary.isEmpty()){
+            Attraction next = findNearestNeighbour(prev, temporary, currentTime);
+            if (next == null) break;
+            schedule.add(next);
+            currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next));
+            temporary.remove(next);
+            prev = next;
 
-            if(verify(prev.getLocation(),next,currentTime)) {
-                schedule.add(next);
-                currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next));
-                temporary.remove(next);
-                prev = next;
-                deleteAttraction(next);
-            }else{
-                break; //nie wiem jak do końca tą pętlę dodać więc na razie robię break
-            }
         }
         return schedule;
     }
