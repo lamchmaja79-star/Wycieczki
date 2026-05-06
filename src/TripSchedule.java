@@ -1,5 +1,3 @@
-import org.w3c.dom.Attr;
-
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +15,7 @@ public class TripSchedule {
 
     public TripSchedule(LocalTime startTime, LocalTime endTime,  Location startLocation) {
         if(startTime.isAfter(endTime)){
-            throw  new IllegalArgumentException("Start time should be after end time");
+            throw  new IllegalArgumentException("Start time should be before end time");
         }
         this.selectedAttractions = new ArrayList<>();
         this.startTime = startTime;
@@ -66,9 +64,8 @@ public class TripSchedule {
     }
 
     public Attraction findNearestNeighbour(Attraction prev, List<Attraction> attractions) {
-        Attraction closestNeighbour = attractions.getFirst();
-        if(prev.equals(closestNeighbour)) { closestNeighbour = attractions.get(1); }
-        int bestTime = getTimeOfAttraction(prev.getLocation(), closestNeighbour);
+        Attraction closestNeighbour = null;
+        int bestTime = Integer.MAX_VALUE;
         for(Attraction a : attractions) {
             if(!(a.equals(prev))) {
                 int time = getTimeOfAttraction(prev.getLocation(), a);
@@ -127,8 +124,8 @@ public class TripSchedule {
                 currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next));
                 temporary.remove(next);
                 prev = next;
-            }
-            else {
+                deleteAttraction(next);
+            }else{
                 break; //nie wiem jak do końca tą pętlę dodać więc na razie robię break
             }
         }
