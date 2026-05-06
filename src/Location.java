@@ -32,7 +32,7 @@ public class Location {
     }
 
     public int travelTime(Location other) {
-        return (int)(this.getDistance(other)/SPEED);
+        return (int) Math.ceil(this.getDistance(other)/SPEED);
     }
 
     @Override

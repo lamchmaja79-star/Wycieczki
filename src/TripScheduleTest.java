@@ -8,29 +8,32 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TripScheduleTest {
-    private TripSchedule  tripSchedule;
+    private TripSchedule tripSchedule;
     List<Categories> category1;
     List<Categories> category2;
     private Attraction a1;
     private Attraction a2;
     private Attraction a3;
+
     @BeforeEach
     void setUp() {
-        tripSchedule = new TripSchedule();
+        tripSchedule = new TripSchedule(LocalTime.of(8,0), LocalTime.of(18,30), new Location(0,0));
         category1 = new ArrayList<>();
         category2 = new ArrayList<>();
         category1.add(Categories.HISTORY);
         category2.add(Categories.ENTERTAINMENT);
-        a1 = new Attraction("Muzeum Narodowe", category1, LocalTime.of(9, 0), LocalTime.of(20,0), 120, new Location(1,2));
-        a2 = new Attraction("Wawel", category1, LocalTime.of(10, 0), LocalTime.of(22,0), 45, new Location(1,1));
-        a3 = new Attraction("Kino", category2, LocalTime.of(9, 0), LocalTime.of(20,0), 100,  new Location(7,12));
+        a1 = new Attraction("Muzeum Narodowe", category1, LocalTime.of(9, 0), LocalTime.of(20, 0), 3, new Location(1, 2));
+        a2 = new Attraction("Wawel", category1, LocalTime.of(10, 0), LocalTime.of(22, 0), 45, new Location(1, 1));
+        a3 = new Attraction("Kino", category2, LocalTime.of(9, 0), LocalTime.of(20, 0), 5, new Location(7, 12));
     }
+
     @Test
     void constructor() {
         assertNotNull(tripSchedule.getSelectedAttractions(), "Konstruktor powinien tworzyć listę");
         assertTrue(tripSchedule.getSelectedAttractions().isEmpty(), "Konstruktor powinien tworzyć pustą listę");
 
     }
+
     @Test
     void addToPlan() {
         tripSchedule.addToPlan(a1);
@@ -42,6 +45,7 @@ class TripScheduleTest {
         assertEquals(2, tripSchedule.getSelectedAttractions().size());
         assertTrue(tripSchedule.getSelectedAttractions().contains(a2) && tripSchedule.getSelectedAttractions().contains(a1));
     }
+
     @Test
     void getSelectedAttractions() {
         tripSchedule.addToPlan(a1);
@@ -51,5 +55,15 @@ class TripScheduleTest {
         assertTrue(tripSchedule.getSelectedAttractions().contains(a1));
         assertTrue(tripSchedule.getSelectedAttractions().contains(a2));
         assertTrue(tripSchedule.getSelectedAttractions().contains(a3));
+    }
+
+    @Test
+    void shouldPreferClosestValidAttraction() {
+        tripSchedule.addToPlan(a1);
+        tripSchedule.addToPlan(a2);
+
+        List<Attraction> result = tripSchedule.createSchedule();
+        assertTrue(result.contains(a1) || result.contains(a2));
+        assertFalse(result.isEmpty());
     }
 }

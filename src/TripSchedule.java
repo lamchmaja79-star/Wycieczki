@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,8 +60,16 @@ public class TripSchedule {
         return endTime;
     }
 
-    public int getTimeOfAttraction(Location startingLocation, Attraction attraction) {
-        return startingLocation.travelTime(attraction.getLocation()) + attraction.getDurationMinutes();
+    public int getWaitingTime(Attraction attraction, LocalTime currentTime) {
+        int waitTime = 0;
+        if(attraction.getOpen().isAfter(currentTime)){
+            waitTime = (int) Duration.between( currentTime, attraction.getOpen()).toMinutes();
+        }
+        return waitTime;
+    }
+    public int getTimeOfAttraction(Location startingLocation, Attraction attraction, LocalTime currentTime) {
+        int waitTime = getWaitingTime(attraction, currentTime);
+        return waitTime + startingLocation.travelTime(attraction.getLocation()) + attraction.getDurationMinutes();
     }
 
     public Attraction findNearestNeighbour(Attraction prev, List<Attraction> attractions, LocalTime currentTime) {
@@ -69,7 +78,7 @@ public class TripSchedule {
         for(Attraction a : attractions) {
             if(!(a.equals(prev))) {
                 if (!(verify(prev.getLocation(), a, currentTime))) continue;
-                int time = getTimeOfAttraction(prev.getLocation(), a);
+                int time = getTimeOfAttraction(prev.getLocation(), a,  currentTime);
                 if (time < bestTime) {
                     bestTime = time;
                     closestNeighbour = a;
@@ -79,22 +88,31 @@ public class TripSchedule {
         return closestNeighbour;
     }
 
-    //metoda do napisania, ma sprawdzać czy możemy dodać daną atrakcję (czy zmieścimy się w określonym czasie) + czy jest otwarta
-    public boolean verify(Location startLocation, Attraction attraction, LocalTime currentTime) {
-        LocalTime arrivalTime = currentTime.plusMinutes(startLocation.travelTime(attraction.getLocation()));
+    ///metoda do napisania, ma sprawdzać czy możemy dodać daną atrakcję (czy zmieścimy się w określonym czasie) + czy jest otwarta
 
-        return attraction.isOpen(arrivalTime) && endTime.isAfter(arrivalTime.plusMinutes(attraction.getDurationMinutes()));
+
+    public boolean verify(Location startLocation, Attraction attraction, LocalTime currentTime) {
+
+        int travel = startLocation.travelTime(attraction.getLocation());
+        LocalTime arrival = currentTime.plusMinutes(travel);
+
+        int wait = getWaitingTime(attraction, arrival);
+        LocalTime start = arrival.plusMinutes(wait);
+
+        LocalTime finish = start.plusMinutes(attraction.getDurationMinutes());
+
+        return attraction.isOpen(start) && !finish.isAfter(endTime);
     }
 
     public Attraction findFirstAttraction(Location location, List<Attraction> attractions, LocalTime currentTime) {
         int bestTime = Integer.MAX_VALUE;
         Attraction bestAttraction = null;
         for(Attraction a : attractions) {
-            int travelTime = location.travelTime(a.getLocation());
+            int travelTime = location.travelTime(a.getLocation()) + getWaitingTime(a, currentTime);
             LocalTime arrival = currentTime.plusMinutes(travelTime);
             if(!a.isOpen(arrival)) continue;
             if(arrival.plusMinutes(a.getDurationMinutes()).isAfter(endTime)) continue;
-            int time = getTimeOfAttraction(location, a);
+            int time = getTimeOfAttraction(location, a, currentTime);
             if(time < bestTime) {
                 bestTime = time;
                 bestAttraction = a;
@@ -102,6 +120,8 @@ public class TripSchedule {
         }
         return bestAttraction;
     }
+
+
 
     public List<Attraction> createSchedule() {
         List<Attraction> schedule = new ArrayList<>();
@@ -116,14 +136,14 @@ public class TripSchedule {
         if (first == null) return schedule;
         schedule.add(first);
         temporary.remove(first);
-        currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first));
+        currentTime = currentTime.plusMinutes(getTimeOfAttraction(startLocation, first, currentTime));
         Attraction prev = first;
 
         while(currentTime.isBefore(endTime) && !temporary.isEmpty()){
             Attraction next = findNearestNeighbour(prev, temporary, currentTime);
             if (next == null) break;
             schedule.add(next);
-            currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next));
+            currentTime = currentTime.plusMinutes(getTimeOfAttraction(prev.getLocation(), next,  currentTime));
             temporary.remove(next);
             prev = next;
 
