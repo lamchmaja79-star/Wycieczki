@@ -1,8 +1,10 @@
+import java.io.Serializable;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
-public class Attraction {
+public class Attraction implements Serializable {
+    private static final long serialVersionUID = 1L;
     private String name;
     private List<Categories> categoryList;
     private LocalTime open;

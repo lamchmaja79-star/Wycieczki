@@ -1,9 +1,11 @@
+import java.io.*;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DataManager {
-    public void data(){
+    public static List<Attraction> attractions = new ArrayList<>();
+    public static void data(){
         List<Categories> h_a_s_Categories = new ArrayList<>();
         h_a_s_Categories.add(Categories.HISTORY);
         h_a_s_Categories.add(Categories.ART);
@@ -30,7 +32,7 @@ public class DataManager {
         r_e_sp_Categories.add(Categories.SPORT);
         List<Categories> d_Categories = new ArrayList<>();
         d_Categories.add(Categories.DINING);
-        List<Attraction> attractions = new ArrayList<>();
+
         attractions.add(new Attraction("Zamek Królewski na Wawelu", h_a_s_Categories, LocalTime.of(9,0), LocalTime.of(17, 0), 120, new Location(-4, -18)));
         attractions.add(new Attraction("Dworzec Główny PKP", s_Categories, LocalTime.MIDNIGHT, LocalTime.MAX, 5, new Location(0,0)));
         attractions.add(new Attraction("Muzeum Narodowe", h_a_s_Categories, LocalTime.of(10,0), LocalTime.of(18, 0), 180, new Location(-12,-7)));
@@ -49,5 +51,7 @@ public class DataManager {
         attractions.add(new Attraction("VIRAL Kebab", d_Categories, LocalTime.of(12,0), LocalTime.of(22, 0), 30, new Location(-13,2)));
         attractions.add(new Attraction("Pixel Planet", r_e_sp_Categories, LocalTime.of(10, 0), LocalTime.of(22, 0), 60, new Location(-4, -7)));
 
+    }
+    public static void saveAttractions() {
     }
 }
