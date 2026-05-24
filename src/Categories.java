@@ -6,6 +6,6 @@ enum Categories {
     HARDCORE,
     RECREATION,
     DINING,
-    WELLNESS;
-    //SOUVENIR
+    WELLNESS,
+    SOUVENIR;
 }

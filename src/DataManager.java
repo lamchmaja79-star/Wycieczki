@@ -25,6 +25,6 @@ public class DataManager {
         attractions.add(new Attraction("Brama Floriańska", h_Categories, LocalTime.of(8, 0),  LocalTime.of(18, 0), 30, new Location(-2,-3)));
         attractions.add(new Attraction("Sukiennice", h_s_Categories, LocalTime.of(10, 0), LocalTime.of(18, 0), 20, new Location(-4,-8)));
         attractions.add(new Attraction("Stadion Miejski im. Henryka Reymana", sp_e_allCategories, LocalTime.of(8,0),  LocalTime.of(22, 0), 100, new Location(-25,-4)));
-        attractions.add(new Attraction("Kościół Mariacki", h_Categories, LocalTime))
+        attractions.add(new Attraction("Kościół Mariacki", h_Categories, LocalTime.of(11, 30), LocalTime.of(17, 45), 45, new Location(-3, -7)));
     }
 }
