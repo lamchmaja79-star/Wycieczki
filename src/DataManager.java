@@ -44,10 +44,10 @@ public class DataManager {
         attractions.add(new Attraction("Kopalnia soli w Wieliczce", h_a_s_Categories, LocalTime.of(8,0), LocalTime.of(18, 0), 200, new Location(60, -110)));
         attractions.add(new Attraction("Fabryka 'Emalia' Oskara Schindlera", h_Categories, LocalTime.of(9,0), LocalTime.of(20, 0), 60, new Location(12,-23)));
         attractions.add(new Attraction("Barbakan", h_Categories, LocalTime.of(10,30), LocalTime.of(18, 0), 30, new Location(-2,-2)));
-        attractions.add(new Attraction("Muzeum Uniwersytetu Jagiellońskiego Collegium Maius", h_Categories, LocalTime.of(9,00), LocalTime.of(16, 30), 30, new Location(-7,-7)));
+        attractions.add(new Attraction("Muzeum Uniwersytetu Jagiellońskiego Collegium Maius", h_Categories, LocalTime.of(9,0), LocalTime.of(16, 30), 30, new Location(-7,-7)));
         attractions.add(new Attraction("Zalew Zakrzówek", r_e_Categories, LocalTime.of(8,00), LocalTime.of(19, 0), 90, new Location(-25,-32)));
-        attractions.add(new Attraction("VIRAL Kebab", d_Categories, LocalTime.of(12,0), LocalTime.of(22, 0), 30, new Location(-13,-2)));
-
+        attractions.add(new Attraction("VIRAL Kebab", d_Categories, LocalTime.of(12,0), LocalTime.of(22, 0), 30, new Location(-13,2)));
+        attractions.add(new Attraction("Pixel Planet", r_e_sp_Categories, LocalTime.of(10, 0), LocalTime.of(22, 0), 60, new Location(-4, -7)));
 
     }
 }
