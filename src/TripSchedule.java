@@ -126,8 +126,7 @@ public class TripSchedule {
     public List<Attraction> createSchedule() {
         List<Attraction> schedule = new ArrayList<>();
         List<Attraction> temporary = new ArrayList<>(selectedAttractions);
-        //lepiej na kopii niz oryginalnej bo jak bedziemy chcialy pozniej wypisac liste to bedzie pusta
-        //skoro usuwamy te elementy i nie bedziemy mogly wyswietlic jej w interfejsie
+
 
         LocalTime currentTime = startTime;
         Location currentLocation = startLocation;

@@ -31,7 +31,7 @@ public class TripPlanner {
     }
 
     public List<Attraction> sortByDuration() {
-        List<Attraction> filtered = allAttractions;
+        List<Attraction> filtered = new ArrayList<>(allAttractions);
         filtered.sort(Comparator.comparingInt(Attraction::getDurationMinutes));
     return filtered;
     }

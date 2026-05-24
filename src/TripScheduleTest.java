@@ -99,4 +99,6 @@ class TripScheduleTest {
         assertEquals(0, tripSchedule.getSelectedAttractions().size());
     }
 
+    //test dla okregu
+
 }

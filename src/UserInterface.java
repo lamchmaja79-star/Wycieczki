@@ -15,6 +15,7 @@ public class UserInterface extends Application {
 
     private Stage primaryStage;
     private final GridPane grid = new GridPane();
+    private final GridPane gridNext = new GridPane();
     private final BorderPane pane = new BorderPane();
 
     @Override
@@ -81,24 +82,18 @@ public class UserInterface extends Application {
         Button dining = new Button("Posiłki");
         Button wellness = new Button("Wellness");
 
-        VBox boxx = new VBox(10);
-        boxx.setPrefWidth(140);
-        boxx.setAlignment(Pos.TOP_CENTER);
+        Button[] tabButton = {history,entertainment,art,sport,hardcore,recreation,dining,wellness};
+        //gridNext.add(layout, 0, 0);
 
-        boxx.getChildren().addAll(
-                history,
-                entertainment,
-                art,
-                sport,
-                hardcore, 
-                recreation,
-                dining,
-                wellness
-        );
+        gridNext.setAlignment(Pos.CENTER);
+        gridNext.setVgap(10);
+        for(int i = 0; i < tabButton.length; i++){
+            gridNext.add(tabButton[i], 4, i);
+        }
 
 
 
-        Scene mainScene = new Scene(layout, 800, 450);
+        Scene mainScene = new Scene(gridNext, 800, 450);
         primaryStage.setScene(mainScene);
     }
 }
