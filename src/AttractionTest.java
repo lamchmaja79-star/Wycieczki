@@ -15,7 +15,7 @@ class AttractionTest {
     @BeforeEach
     void setUp() {
         categoryList = new ArrayList<>();
-        categoryList.add(Categories.ENTERTAINMENT);
+        categoryList.add(Categories.ROZRYWKA);
         location = new Location(10,11);
 
 
@@ -66,7 +66,7 @@ class AttractionTest {
         assertNotEquals(a1, attraction, "equals should return false for different names");
         //różne kategorie
         List<Categories> category2 =  new ArrayList<>();
-        category2.add(Categories.HISTORY);
+        category2.add(Categories.HISTORIA);
         Attraction a2 = new Attraction("Kino Kijów", category2, LocalTime.of(9,0),LocalTime.of(22,0), 2,location);
         assertNotEquals(a2, attraction, "equals should return false for different categories");
         //różne czasy otwarcia

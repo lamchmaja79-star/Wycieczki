@@ -19,8 +19,8 @@ class TripPlannerTest {
         tripPlanner = new TripPlanner();
         category1 = new ArrayList<>();
         category2 = new ArrayList<>();
-        category1.add(Categories.HISTORY);
-        category2.add(Categories.ENTERTAINMENT);
+        category1.add(Categories.HISTORIA);
+        category2.add(Categories.ROZRYWKA);
         a1 = new Attraction("Muzeum Narodowe", category1, LocalTime.of(9, 0), LocalTime.of(20,0), 120, new Location(1,1));
         a2 = new Attraction("Wawel", category1, LocalTime.of(10, 0), LocalTime.of(22,0), 45,  new Location(1,2));
         a3 = new Attraction("Kino", category2, LocalTime.of(9, 0), LocalTime.of(20,0), 100,  new Location(3,4));
@@ -59,7 +59,7 @@ class TripPlannerTest {
         tripPlanner.addAttraction(a1);
         tripPlanner.addAttraction(a2);
         tripPlanner.addAttraction(a3);
-        List<Attraction> result = tripPlanner.filterByCategory(Categories.HISTORY);
+        List<Attraction> result = tripPlanner.filterByCategory(Categories.HISTORIA);
         assertEquals(2, result.size());
         assertTrue(result.contains(a1));
         assertTrue(result.contains(a2));
@@ -70,7 +70,7 @@ class TripPlannerTest {
     void filterByCategory_notFoundMatch(){
         tripPlanner.addAttraction(a1);
         tripPlanner.addAttraction(a2);
-        List<Attraction> result = tripPlanner.filterByCategory(Categories.ENTERTAINMENT);
+        List<Attraction> result = tripPlanner.filterByCategory(Categories.ROZRYWKA);
         assertTrue(result.isEmpty());
     }
 
