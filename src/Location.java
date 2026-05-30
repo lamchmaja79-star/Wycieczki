@@ -31,7 +31,7 @@ public class Location implements Serializable {
     public double getDistance(Location other){
         double x = this.x - other.x;
         double y = this.y - other.y;
-        return x+y;
+        return Math.sqrt(x*x + y*y); //////jesli chcialas tutaj x+y to sorki !!!
     }
 
     public int travelTime(Location other) {
