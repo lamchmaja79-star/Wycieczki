@@ -212,7 +212,6 @@ public class UserInterface extends Application {
         Button backButton = new Button("Powrót do edycji");
         backButton.setStyle("-fx-cursor: hand; -fx-font-size: 13px; -fx-padding: 8px 20px;");
         backButton.setOnAction(e -> {
-            Scene mainScene = new Scene(mainLayout, 1100, 600);
             primaryStage.setScene(mainScene);
         });
 
@@ -226,10 +225,11 @@ public class UserInterface extends Application {
     }
 
     private void setupStage() {
-        Scene scene = new Scene(mainLayout, 1100, 600);
-        primaryStage.setTitle("Planowanie Wycieczki");
-        primaryStage.setScene(scene);
-        primaryStage.centerOnScreen();
-        primaryStage.show();
-    }
+    mainScene = new Scene(mainLayout, 1100, 600);
+
+    primaryStage.setTitle("Planowanie wycieczki");
+    primaryStage.setScene(mainScene);
+    primaryStage.centerOnScreen();
+    primaryStage.show();
+}
 }
