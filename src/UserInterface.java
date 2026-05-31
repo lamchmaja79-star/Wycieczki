@@ -13,6 +13,7 @@ import java.util.List;
 public class UserInterface extends Application {
 
     private Stage primaryStage;
+    private Scene mainScene;
     private final BorderPane mainLayout = new BorderPane();
     private final HBox bottomSelectionBar = new HBox();
 
