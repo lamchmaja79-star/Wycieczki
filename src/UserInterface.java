@@ -23,32 +23,8 @@ public class UserInterface extends Application {
     @Override
     public void start(Stage stage) {
         this.primaryStage = stage;
-        initData();
         buildUI();
         setupStage();
-    }
-
-    private void initData() {
-        planner.addAttraction(new Attraction("Muzeum Narodowe", List.of(Categories.HISTORIA, Categories.SZTUKA), LocalTime.of(9, 0), LocalTime.of(17, 0), 90, new Location(1.0, 2.0)));
-        planner.addAttraction(new Attraction("Zamek Królewski", List.of(Categories.HISTORIA), LocalTime.of(9, 0), LocalTime.of(18, 0), 100, new Location(1.5, 3.0)));
-        planner.addAttraction(new Attraction("Podziemia Rynku", List.of(Categories.HISTORIA, Categories.ROZRYWKA), LocalTime.of(9, 0), LocalTime.of(19, 0), 60, new Location(0.5, 0.5)));
-
-        planner.addAttraction(new Attraction("Koło młyńskie", List.of(Categories.ROZRYWKA, Categories.HARDCORE), LocalTime.of(10, 0), LocalTime.of(22, 0), 60, new Location(5.0, 5.0)));
-        planner.addAttraction(new Attraction("Kino", List.of(Categories.ROZRYWKA), LocalTime.of(12, 0), LocalTime.of(23, 0), 130, new Location(2.0, 1.0)));
-        planner.addAttraction(new Attraction("Escape Room", List.of(Categories.ROZRYWKA), LocalTime.of(8, 0), LocalTime.of(21, 0), 60, new Location(1.2, 1.8)));
-
-        planner.addAttraction(new Attraction("Galeria Obrazów", List.of(Categories.SZTUKA), LocalTime.of(10, 0), LocalTime.of(18, 0), 90, new Location(0.8, 2.2)));
-        planner.addAttraction(new Attraction("Teatr", List.of(Categories.SZTUKA), LocalTime.of(18, 0), LocalTime.of(22, 0), 150, new Location(1.1, 0.9)));
-
-        planner.addAttraction(new Attraction("Basen", List.of(Categories.SPORT, Categories.WELLNESS), LocalTime.of(6, 0), LocalTime.of(22, 0), 90, new Location(3.0, 4.0)));
-
-        planner.addAttraction(new Attraction("Skok na Bungee", List.of(Categories.HARDCORE), LocalTime.of(10, 0), LocalTime.of(18, 0), 45, new Location(6.0, 2.0)));
-
-        planner.addAttraction(new Attraction("Zoo", List.of(Categories.REKREACJA), LocalTime.of(9, 0), LocalTime.of(17, 0), 240, new Location(4.5, 4.5)));
-
-        planner.addAttraction(new Attraction("Restauracja", List.of(Categories.POSIŁKI), LocalTime.of(11, 0), LocalTime.of(23, 0), 60, new Location(0.2, 0.3)));
-
-        planner.addAttraction(new Attraction("Masaż", List.of(Categories.WELLNESS, Categories.REKREACJA), LocalTime.of(9, 0), LocalTime.of(20, 0), 180, new Location(7.0, 7.0)));
     }
 
     private void buildUI() {

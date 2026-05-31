@@ -1,3 +1,7 @@
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -8,6 +12,12 @@ public class TripPlanner {
 
     public TripPlanner() {
         this.allAttractions = new ArrayList<>();
+        allAttractions = DataManager.loadFromFile();
+        if (allAttractions == null || allAttractions.isEmpty()) {
+            System.out.println("Generowanie domyślnej bazy danych...");
+            allAttractions = DataManager.data();
+            DataManager.saveToFile(allAttractions);
+        }
     }
 
     public void addAttraction(Attraction a) {
@@ -35,6 +45,8 @@ public class TripPlanner {
         filtered.sort(Comparator.comparingInt(Attraction::getDurationMinutes));
     return filtered;
     }
+
+
 
 
 

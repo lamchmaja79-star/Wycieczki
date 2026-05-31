@@ -4,7 +4,8 @@ public class Location implements Serializable {
     private static final long serialVersionUID = 1L;
     private double x;
     private double y;
-    private static final double SPEED = 0.833;
+    private static final double WALK_SPEED = 2.0/3.0; //ok. 5km/h
+    private static final double CAR_SPEED = 5.0; //ok. 30km/h
 
 
     public Location(double x, double y) {
@@ -35,7 +36,13 @@ public class Location implements Serializable {
     }
 
     public int travelTime(Location other) {
-        return (int) Math.ceil(this.getDistance(other)/SPEED);
+        if (getDistance(other) > 20.0) {
+            // Czas jazdy + 10 minut na zaparkowanie i dojście
+            return (int) Math.ceil(getDistance(other) / CAR_SPEED) + 10;
+        } else {
+            // Wszędzie poniżej 2 km idziemy żwawym krokiem (5 km/h)
+            return (int) Math.ceil(getDistance(other) / WALK_SPEED);
+        }
     }
 
     @Override

@@ -7,5 +7,5 @@ enum Categories {
     REKREACJA,
     POSIŁKI,
     WELLNESS,
-    SOUVENIR;
+    PAMIATKI;
 }
