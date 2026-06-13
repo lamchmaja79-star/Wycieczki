@@ -72,15 +72,21 @@ public class TripSchedule {
         return waitTime + startingLocation.travelTime(attraction.getLocation()) + attraction.getDurationMinutes();
     }
 
+    //skorygowana funkcja szukająca "najbliższego sąsiada"
+    public int getPointsOfAttraction(Location startingLocation, Attraction attraction, LocalTime currentTime) {
+        int waitTime = getWaitingTime(attraction, currentTime);
+        return (5*startingLocation.travelTime(attraction.getLocation())) + attraction.getDurationMinutes() + waitTime;
+    }
+
     public Attraction findNearestNeighbour(Attraction prev, List<Attraction> attractions, LocalTime currentTime) {
         Attraction closestNeighbour = null;
-        int bestTime = Integer.MAX_VALUE;
+        int bestPoints = Integer.MAX_VALUE;
         for(Attraction a : attractions) {
             if(!(a.equals(prev))) {
                 if (!(verify(prev.getLocation(), a, currentTime))) continue;
-                int time = getTimeOfAttraction(prev.getLocation(), a,  currentTime);
-                if (time < bestTime) {
-                    bestTime = time;
+                int points = getPointsOfAttraction(prev.getLocation(), a,  currentTime);
+                if (points < bestPoints) {
+                    bestPoints = points;
                     closestNeighbour = a;
                 }
             }
@@ -105,16 +111,16 @@ public class TripSchedule {
     }
 
     public Attraction findFirstAttraction(Location location, List<Attraction> attractions, LocalTime currentTime) {
-        int bestTime = Integer.MAX_VALUE;
+        int bestPoints = Integer.MAX_VALUE;
         Attraction bestAttraction = null;
         for(Attraction a : attractions) {
             int travelTime = location.travelTime(a.getLocation()) + getWaitingTime(a, currentTime);
             LocalTime arrival = currentTime.plusMinutes(travelTime);
             if(!a.isOpen(arrival)) continue;
             if(arrival.plusMinutes(a.getDurationMinutes()).isAfter(endTime)) continue;
-            int time = getTimeOfAttraction(location, a, currentTime);
-            if(time < bestTime) {
-                bestTime = time;
+            int points = getPointsOfAttraction(location, a, currentTime);
+            if(points < bestPoints) {
+                bestPoints = points;
                 bestAttraction = a;
             }
         }

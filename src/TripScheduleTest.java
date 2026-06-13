@@ -26,7 +26,7 @@ class TripScheduleTest {
         a1 = new Attraction("Muzeum Narodowe", category1, LocalTime.of(9, 0), LocalTime.of(20, 0), 90, new Location(1, 2));
         a2 = new Attraction("Wawel", category1, LocalTime.of(10, 0), LocalTime.of(22, 0), 120, new Location(1, 1));
         a3 = new Attraction("Kino", category2, LocalTime.of(9, 0), LocalTime.of(20, 0), 50, new Location(7, 12));
-        a4 = new Attraction("Daleka Atrakcja", category2, LocalTime.of(9, 0), LocalTime.of(20, 0), 50, new Location(500, 500));
+        a4 = new Attraction("Daleka Atrakcja", category2, LocalTime.of(9, 0), LocalTime.of(20, 0), 50, new Location(5000, 5000));
     }
 
     @Test
