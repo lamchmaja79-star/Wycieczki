@@ -37,9 +37,84 @@ public class UserInterface extends Application {
         Label titleLabel = new Label("Tworzenie planu wycieczki");
         titleLabel.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
         timeInfoLabel.setStyle("-fx-font-size: 13px; -fx-text-fill: #555555;");
-        updateTimeLabel();
 
-        topPanel.getChildren().addAll(titleLabel, timeInfoLabel);
+        HBox timeSelectionBox = new HBox(15);
+        timeSelectionBox.setAlignment(Pos.CENTER);
+
+        Spinner<LocalTime> startSpinner = new Spinner<>();
+        startSpinner.setEditable(true);
+        startSpinner.setPrefWidth(100);
+        SpinnerValueFactory<LocalTime> startFactory = new SpinnerValueFactory<LocalTime>() {
+            { setValue(schedule.getStartTime()); }
+            @Override public void decrement(int i) { if (getValue() != null) setValue(getValue().minusMinutes(i)); }
+            @Override public void increment(int i) { if (getValue() != null) setValue(getValue().plusMinutes(i)); }
+        };
+
+        startFactory.setConverter(new javafx.util.StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime value) { return value != null ? value.toString() : ""; }
+            @Override
+            public LocalTime fromString(String string) {
+                try { return LocalTime.parse(string); }
+                catch (Exception e) { return startFactory.getValue(); } // w razie błędu przywraca starą wartość
+            }
+        });
+        startSpinner.setValueFactory(startFactory);
+
+        Spinner<LocalTime> endSpinner = new Spinner<>();
+        endSpinner.setEditable(true);
+        endSpinner.setPrefWidth(100);
+
+        SpinnerValueFactory<LocalTime> endFactory = new SpinnerValueFactory<LocalTime>() {
+            { setValue(schedule.getEndTime()); }
+            @Override public void decrement(int i) { if (getValue() != null) setValue(getValue().minusMinutes(i)); }
+            @Override public void increment(int i) { if (getValue() != null) setValue(getValue().plusMinutes(i)); }
+        };
+
+        endFactory.setConverter(new javafx.util.StringConverter<LocalTime>() {
+            @Override
+            public String toString(LocalTime value) { return value != null ? value.toString() : ""; }
+            @Override
+            public LocalTime fromString(String string) {
+                try { return LocalTime.parse(string); }
+                catch (Exception e) { return endFactory.getValue(); }
+            }
+        });
+        endSpinner.setValueFactory(endFactory);
+
+        startSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+           if(newValue != null){
+               if(newValue.isBefore(schedule.getEndTime())){
+                   schedule.setStartTime(newValue);
+                   updateTimeLabel();
+               }
+               else{
+                   javafx.application.Platform.runLater(() -> startSpinner.getValueFactory().setValue(oldValue));
+                   showWarningAlert("Błąd czasu", "Czas rozpoczęcia musi być przed czasem zakończenia!");
+               }
+           }
+        });
+
+        endSpinner.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null){
+                if(newValue.isAfter(schedule.getStartTime())){
+                    schedule.setEndTime(newValue);
+                    updateTimeLabel();
+                }
+                else{
+                    javafx.application.Platform.runLater(() -> startSpinner.getValueFactory().setValue(oldValue));
+                    showWarningAlert("Błąd czasu", "Czas zakączenia musi być po czasie rozpoczęcia!");
+                }
+            }
+        });
+
+        timeSelectionBox.getChildren().addAll(
+                new Label("Start:"), startSpinner,
+                new Label("Koniec:"), endSpinner
+        );
+
+
+        topPanel.getChildren().addAll(titleLabel, timeSelectionBox,timeInfoLabel);
         mainLayout.setTop(topPanel);
 
         VBox contentContainer = new VBox(20);
@@ -150,6 +225,14 @@ public class UserInterface extends Application {
 
         timeInfoLabel.setText(String.format("Łączny czas: %d min (%dh %dmin) / %d min (max od %s do %s)",
                 total, hours, minutes, maxAllowedMinutes, schedule.getStartTime(), schedule.getEndTime()));
+    }
+
+    private void showWarningAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     private void showOptimalScheduleScreen() {
