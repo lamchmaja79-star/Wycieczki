@@ -278,7 +278,12 @@ public class UserInterface extends Application {
                 total, hours, minutes, maxAllowedMinutes, schedule.getStartTime(), schedule.getEndTime()));
     }
 
-
+    /**
+ * Shows a warning alert with given title and message.
+ *
+ * @param title alert title
+ * @param message alert content
+ */
     private void showWarningAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
