@@ -54,6 +54,8 @@ class AttractionTest {
     void testToString() {
         String result = attraction.toString();
         assertEquals("ENTERTAINMENT: Kino Kijów, open: 09:00, closed: 22:00, czas trwania: 2 min", result);
+
+
     }
 
     @Test

@@ -10,6 +10,20 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UserInterface class
+ * JavaFX application responsible for displaying attractions,
+ * allowing user selection, and generating an optimal trip schedule.
+ *
+ * The UI is divided into:
+ * - category-based attraction selection
+ * - selected attractions bar
+ * - final optimized schedule view
+ *
+ * @author Karolina Kolarz
+ * @author Maja Lamch
+ * @version 1.0
+ */
 public class UserInterface extends Application {
 
     private Stage primaryStage;
@@ -21,6 +35,11 @@ public class UserInterface extends Application {
     private final TripSchedule schedule = new TripSchedule();
     private final Label timeInfoLabel = new Label();
 
+    /**
+     * Initializes and starts the JavaFX application.
+     *
+     * @param stage primary application window
+     */
     @Override
     public void start(Stage stage) {
         this.primaryStage = stage;
@@ -28,6 +47,12 @@ public class UserInterface extends Application {
         setupStage();
     }
 
+    /**
+     * Builds the main user interface layout including:
+     * - header panel
+     * - category sections with attractions
+     * - bottom selection bar
+     */
     private void buildUI() {
         VBox topPanel = new VBox(5);
 
@@ -155,6 +180,13 @@ public class UserInterface extends Application {
         mainLayout.setBottom(footerPanel);
     }
 
+    /**
+     * Creates UI section for a single category of attractions.
+     *
+     * @param container parent container
+     * @param categoryName name of category
+     * @param attractions list of attractions in this category
+     */
     private void createCategorySection(VBox container, String categoryName, List<Attraction> attractions) {
         VBox section = new VBox(5);
         section.setAlignment(Pos.TOP_CENTER);
@@ -180,6 +212,12 @@ public class UserInterface extends Application {
         container.getChildren().add(section);
     }
 
+    /**
+     * Attempts to add an attraction to the trip plan
+     * if it does not exceed allowed time constraints.
+     *
+     * @param attraction attraction selected by user
+     */
     private void tryAddAttraction(Attraction attraction) {
         int currentTotal = calculateTotalMinutes();
         int maxAllowedMinutes = (int) java.time.Duration.between(schedule.getStartTime(), schedule.getEndTime()).toMinutes();
@@ -193,6 +231,10 @@ public class UserInterface extends Application {
         updateTimeLabel();
     }
 
+    /**
+     * Refreshes the bottom selection bar UI.
+     * Removes all elements and rebuilds it based on currently selected attractions.
+     */
     private void refreshBottomBar() {
         bottomSelectionBar.getChildren().clear();
         for (Attraction a : schedule.getSelectedAttractions()) {
@@ -209,6 +251,11 @@ public class UserInterface extends Application {
         }
     }
 
+    /**
+     * Calculates total duration of all selected attractions.
+     *
+     * @return total time in minutes
+     */
     private int calculateTotalMinutes() {
         int sum = 0;
         for (Attraction a : schedule.getSelectedAttractions()) {
@@ -217,6 +264,10 @@ public class UserInterface extends Application {
         return sum;
     }
 
+    /**
+     * Updates the time information label in the UI.
+     * Displays total selected attraction time and maximum allowed trip time.
+     */
     private void updateTimeLabel() {
         int total = calculateTotalMinutes();
         int maxAllowedMinutes = (int) java.time.Duration.between(schedule.getStartTime(), schedule.getEndTime()).toMinutes();
@@ -227,6 +278,7 @@ public class UserInterface extends Application {
                 total, hours, minutes, maxAllowedMinutes, schedule.getStartTime(), schedule.getEndTime()));
     }
 
+
     private void showWarningAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -234,6 +286,11 @@ public class UserInterface extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    /**
+     * Displays the computed optimal schedule using greedy algorithm.
+     * Shows travel time, waiting time and visit duration for each attraction.
+     */
 
     private void showOptimalScheduleScreen() {
         BorderPane optimalLayout = new BorderPane();
@@ -308,6 +365,9 @@ public class UserInterface extends Application {
         primaryStage.setScene(optimalScene);
     }
 
+    /**
+     * Configures and displays the main application window.
+     */
     private void setupStage() {
     mainScene = new Scene(mainLayout, 1100, 600);
 

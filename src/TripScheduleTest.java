@@ -100,5 +100,7 @@ class TripScheduleTest {
     }
 
     //test dla okregu
+    //test dla tylko odleglosci
+    //test dla atrakcji ktora za dlugo trwa
 
 }

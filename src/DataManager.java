@@ -3,14 +3,33 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class DataManager
+ * Manages attraction data by creating sample data and saving/loading it from a file.
+ *
+ * @author Maja Lamch
+ * @version 1.0
+ */
 public class DataManager {
     private static String fileName = "atrakcje.ser";
 
+    /**
+     * Returns the name of the file used to store attractions.
+     *
+     * @return file name
+     */
     public static String getFileName() {
         return fileName;
     }
 
+    /** List containing all available attractions */
     public static List<Attraction> attractions = new ArrayList<>();
+
+    /**
+     * Creates and returns a list of sample attractions.
+     *
+     * @return list of sample attractions
+     */
     public static List<Attraction> data(){
         List<Categories> h_a_s_Categories = new ArrayList<>();
         h_a_s_Categories.add(Categories.HISTORIA);
@@ -71,6 +90,11 @@ public class DataManager {
         return attractions;
     }
 
+    /**
+     * Saves a list of attractions to a file using serialization.
+     *
+     * @param attractionsList list of attractions to save
+     */
     public static void saveToFile(List<Attraction> attractionsList) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(fileName))) {
             oos.writeObject(attractionsList);
@@ -80,6 +104,11 @@ public class DataManager {
         }
     }
 
+    /**
+     * Loads a list of attractions from a file using deserialization.
+     *
+     * @return list of loaded attractions
+     */
     @SuppressWarnings("unchecked")
     public static List<Attraction> loadFromFile() {
         List<Attraction> loadedAttractions = new ArrayList<>();
