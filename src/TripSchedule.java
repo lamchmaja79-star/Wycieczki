@@ -136,7 +136,15 @@ public class TripSchedule {
     }
 
 
-    //skorygowana funkcja szukająca "najbliższego sąsiada"
+    /**
+     * Calculates "cost" of visiting an attraction from a given location.
+     * Includes travel time, waiting time, and attraction duration.
+     *
+     * @param startingLocation current location
+     * @param attraction attraction to evaluate
+     * @param currentTime current time
+     * @return total estimated cost in minutes (weighted travel + wait + visit time)
+     */
     public int getPointsOfAttraction(Location startingLocation, Attraction attraction, LocalTime currentTime) {
         int waitTime = getWaitingTime(attraction, currentTime);
         return (5*startingLocation.travelTime(attraction.getLocation())) + attraction.getDurationMinutes() + waitTime;
