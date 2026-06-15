@@ -87,8 +87,17 @@ public class TripSchedule {
         }
     };
 
-    //public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
-    //public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
+    /**
+     * Sets start time of the trip.
+     *
+     */
+    public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
+
+    /**
+     * Sets end time of the trip.
+     *
+     */
+    public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
 
     /**
      * Returns start time of the trip.
