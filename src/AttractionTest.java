@@ -18,7 +18,6 @@ class AttractionTest {
         categoryList.add(Categories.ROZRYWKA);
         location = new Location(10,11);
 
-
         attraction = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,0),LocalTime.of(22,0), 2, location);
     }
 
@@ -30,6 +29,7 @@ class AttractionTest {
     @Test
     void getCategoryList() {
         assertEquals(categoryList , attraction.getCategoryList());
+        assertEquals(1, attraction.getCategoryList().size());
     }
 
     @Test
@@ -53,9 +53,7 @@ class AttractionTest {
     @Test
     void testToString() {
         String result = attraction.toString();
-        assertEquals("ENTERTAINMENT: Kino Kijów, open: 09:00, closed: 22:00, czas trwania: 2 min", result);
-
-
+        assertEquals("[ROZRYWKA]: Kino Kijów, open: 09:00, closed: 22:00, czas trwania: 2 min", result);
     }
 
     @Test
