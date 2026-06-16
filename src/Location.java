@@ -100,4 +100,31 @@ public class Location implements Serializable {
     public String toString() {
         return "(" + getX() + "," + getY() + ")";
     }
+
+    /**
+     * Checks whether this location is equal to another object.
+     * The comparison is based on the exact mathematical equality of the X and Y coordinates.
+     *
+     * @param o the object to compare
+     * @return true if the objects are of class Location and have identical coordinates
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Location)) return false;
+        Location other = (Location) o;
+        // Porównujemy wartości współrzędnych x oraz y
+        return Double.compare(other.x, x) == 0 && Double.compare(other.y, y) == 0;
+    }
+
+    /**
+     * Returns a hash code value for the location based on its X and Y coordinates.
+     * Guarantees that objects considered equal by the equals method will return the same hash code.
+     *
+     * @return the hash code value for this location
+     */
+    @Override
+    public int hashCode() {
+        return java.util.Objects.hash(x, y);
+    }
 }

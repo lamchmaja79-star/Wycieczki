@@ -122,6 +122,7 @@ public class Attraction implements Serializable {
                 Objects.equals(name, other.name) &&
                 Objects.equals(categoryList, other.categoryList) &&
                 Objects.equals(open, other.open) &&
+                Objects.equals(location, other.location) &&
                 Objects.equals(closed, other.closed);
     }
 
@@ -132,7 +133,7 @@ public class Attraction implements Serializable {
      */
     @Override
     public int  hashCode() {
-        return Objects.hash(name, categoryList, open, closed, durationMinutes);
+        return Objects.hash(name, categoryList, open, closed, durationMinutes, location);
     }
 
     /**

@@ -78,7 +78,12 @@ class AttractionTest {
         //różny czas trwania
         Attraction a5 = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,30),LocalTime.of(22,0), 200, location);
         assertNotEquals(a5, attraction, "equals should return false for different durations");
+        //różne lokalizacje
+        Attraction a6 = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,30),LocalTime.of(22,0), 2, new Location(2, 13));
+        assertNotEquals(a6, attraction, "equals should return false for different locations");
     }
+
+
 
     @Test
     void testHashCode() {
@@ -86,12 +91,22 @@ class AttractionTest {
         assertEquals(attraction.hashCode(), attraction_copy.hashCode());
         Attraction a1 = new Attraction("Muzeum Narodowe", categoryList, LocalTime.of(9, 0), LocalTime.of(20,0), 120, location);
         assertNotEquals(attraction.hashCode(), a1.hashCode());
+        Attraction a2 = new Attraction("Kino Kijów", categoryList, LocalTime.of(9,0), LocalTime.of(22,0), 2, new Location(2, 13));
+        assertNotEquals(attraction.hashCode(), a2.hashCode());
     }
 
     @Test
-    void isOpen(){
-        assertTrue(attraction.isOpen(LocalTime.of(10, 0)));
+    void isOpenStandard(){
+        assertTrue(attraction.isOpen(LocalTime.of(12, 0)));
+        assertFalse(attraction.isOpen(LocalTime.of(1, 30)));
+    }
+
+    @Test
+    void isOpenEdgeCases(){
+        assertTrue(attraction.isOpen(LocalTime.of(9, 0)));
+        assertFalse(attraction.isOpen(LocalTime.of(8, 59)));
+        assertTrue(attraction.isOpen(LocalTime.of(21, 58)));
         assertFalse(attraction.isOpen(LocalTime.of(21, 59)));
-        assertFalse(attraction.isOpen(LocalTime.of(23, 0)));
+        assertFalse(attraction.isOpen(LocalTime.of(22, 0)));
     }
 }

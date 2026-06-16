@@ -172,6 +172,7 @@ public class UserInterface extends Application {
         contentContainer.setAlignment(Pos.TOP_CENTER);
 
         for (Categories c : Categories.values()) {
+            planner.sortByDuration();
             List<Attraction> catAttractions = planner.filterByCategory(c);
             if (!catAttractions.isEmpty()) {
                 createCategorySection(contentContainer, c.toString(), catAttractions);

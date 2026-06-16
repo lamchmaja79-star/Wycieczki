@@ -69,14 +69,10 @@ public class TripPlanner {
 
     /**
      * Sorts attractions by visit duration in ascending order.
-     *
-     * @return sorted list of attractions
+     * This operation modifies the original list directly.
      */
-    public List<Attraction> sortByDuration() {
-        List<Attraction> filtered = new ArrayList<>(allAttractions);
-        filtered.sort(Comparator.comparingInt(Attraction::getDurationMinutes));
-    return filtered;
+    public void sortByDuration() {
+        allAttractions.sort(Comparator.comparingInt(Attraction::getDurationMinutes));
     }
-
 
 }

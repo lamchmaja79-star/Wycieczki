@@ -17,18 +17,25 @@ class TripPlannerTest {
     @BeforeEach
     void setUp() {
         tripPlanner = new TripPlanner();
+        //Ponieważ konstruktor automatycznie ładuje 28 domyślnych atrakcji,
+        // czyścimy listę, aby testy dodawania/filtrowania działały w izolacji (od rozmiaru 0).
+        tripPlanner.getAllAttractions().clear();
+
         category1 = new ArrayList<>();
         category2 = new ArrayList<>();
         category1.add(Categories.HISTORIA);
         category2.add(Categories.ROZRYWKA);
+
+        // a1 = 120 min, a2 = 45 min, a3 = 100 min
         a1 = new Attraction("Muzeum Narodowe", category1, LocalTime.of(9, 0), LocalTime.of(20,0), 120, new Location(1,1));
         a2 = new Attraction("Wawel", category1, LocalTime.of(10, 0), LocalTime.of(22,0), 45,  new Location(1,2));
         a3 = new Attraction("Kino", category2, LocalTime.of(9, 0), LocalTime.of(20,0), 100,  new Location(3,4));
     }
     @Test
     void constructor() {
-        assertNotNull(tripPlanner.getAllAttractions(), "Konstruktor powinien tworzyć listę");
-        assertTrue(tripPlanner.getAllAttractions().isEmpty(), "Konstruktor powinien tworzyć pustą listę");
+        TripPlanner freshPlanner = new TripPlanner();
+        assertNotNull(freshPlanner.getAllAttractions(), "Konstruktor powinien zainicjalizować listę.");
+        assertFalse(freshPlanner.getAllAttractions().isEmpty(), "Konstruktor powinien automatycznie załadować dane z pliku lub wygenerować bazę domyślną.");
     }
 
     @Test
