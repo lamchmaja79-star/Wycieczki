@@ -1,3 +1,6 @@
+/**
+ * Represents categories.
+ */
 public enum Categories {
     HISTORIA,
     ROZRYWKA,

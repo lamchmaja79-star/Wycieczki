@@ -3,7 +3,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * Class Attraction
  * It stores information about name, categories, opening/closing hours, duration and location.
