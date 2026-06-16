@@ -96,12 +96,15 @@ public class Attraction implements Serializable {
      */
     @Override
     public String toString() {
-        String categoriesString = "";
-        for( Categories c : categoryList){
-            categoriesString += c.toString() ;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < categoryList.size(); i++) {
+            sb.append(categoryList.get(i).toString());
+            if (i < categoryList.size() - 1) {
+                sb.append(", ");
+            }
         }
-        return String.format("%s: %s, open: %s, closed: %s, czas trwania: %d min",
-                categoriesString, name, open, closed, durationMinutes);
+        return String.format("[%s]: %s, open: %s, closed: %s, czas trwania: %d min",
+                sb.toString(), name, open, closed, durationMinutes);
     }
 
     /**

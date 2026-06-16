@@ -127,8 +127,8 @@ public class UserInterface extends Application {
                     updateTimeLabel();
                 }
                 else{
-                    javafx.application.Platform.runLater(() -> startSpinner.getValueFactory().setValue(oldValue));
-                    showWarningAlert("Błąd czasu", "Czas zakączenia musi być po czasie rozpoczęcia!");
+                    javafx.application.Platform.runLater(() -> endSpinner.getValueFactory().setValue(oldValue));
+                    showWarningAlert("Błąd czasu", "Czas zakończenia musi być po czasie rozpoczęcia!");
                 }
             }
         });
@@ -138,8 +138,33 @@ public class UserInterface extends Application {
                 new Label("Koniec:"), endSpinner
         );
 
+        HBox locationBox = new HBox(10);
+        locationBox.setAlignment(Pos.CENTER);
 
-        topPanel.getChildren().addAll(titleLabel, timeSelectionBox,timeInfoLabel);
+        TextField xField = new TextField("0.0");
+        xField.setPrefWidth(50);
+        TextField yField = new TextField("0.0");
+        yField.setPrefWidth(50);
+
+        Runnable updateStartLocation = () -> {
+            try {
+                double x = Double.parseDouble(xField.getText());
+                double y = Double.parseDouble(yField.getText());
+                schedule.setStartLocation(new Location(x, y));
+                updateTimeLabel();
+            } catch (NumberFormatException ex) {
+            }
+        };
+
+        xField.textProperty().addListener((obs, old, newVal) -> updateStartLocation.run());
+        yField.textProperty().addListener((obs, old, newVal) -> updateStartLocation.run());
+
+        locationBox.getChildren().addAll(
+                new Label("Lokalizacja startowa X:"), xField,
+                new Label("Y:"), yField
+        );
+
+        topPanel.getChildren().addAll(titleLabel, timeSelectionBox, locationBox,timeInfoLabel);
         mainLayout.setTop(topPanel);
 
         VBox contentContainer = new VBox(20);
@@ -318,7 +343,7 @@ public class UserInterface extends Application {
             listContainer.getChildren().add(emptyLabel);
         } else {
             LocalTime currentTime = schedule.getStartTime();
-            Location currentLocation = new Location(0.0, 0.0);
+            Location currentLocation = schedule.getStartLocation();
 
             for (int i = 0; i < optimalRoute.size(); i++) {
                 Attraction a = optimalRoute.get(i);
@@ -361,7 +386,15 @@ public class UserInterface extends Application {
             primaryStage.setScene(mainScene);
         });
 
-        VBox bottomPanel = new VBox(backButton);
+        Button saveButton = new Button("Zapisz plan do pliku");
+        saveButton.setStyle("-fx-cursor: hand; -fx-font-size: 13px; -fx-padding: 8px 20px;");
+
+        saveButton.setOnAction(e -> saveScheduleToFile(optimalRoute));
+
+        HBox buttonsBox = new HBox(15, backButton, saveButton);
+        buttonsBox.setAlignment(Pos.CENTER);
+        VBox bottomPanel = new VBox(buttonsBox);
+
         bottomPanel.setAlignment(Pos.CENTER);
         bottomPanel.setPadding(new Insets(15, 0, 0, 0));
         optimalLayout.setBottom(bottomPanel);
@@ -380,5 +413,48 @@ public class UserInterface extends Application {
     primaryStage.setScene(mainScene);
     primaryStage.centerOnScreen();
     primaryStage.show();
+    }
+
+    private void saveScheduleToFile(List<Attraction> optimalRoute) {
+        javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+        fileChooser.setTitle("Zapisz plan wycieczki");
+        fileChooser.getExtensionFilters().add(new javafx.stage.FileChooser.ExtensionFilter("Pliki tekstowe (*.txt)", "*.txt"));
+        java.io.File file = fileChooser.showSaveDialog(primaryStage);
+
+        if(file == null) return;
+        try(java.io.PrintWriter writer = new java.io.PrintWriter(file)){
+            writer.println("=========================================");
+            writer.println("        TWÓJ PLAN ZWIEDZANIA KRAKOWA     ");
+            writer.println("=========================================");
+            writer.println("Czas ramowy: " + schedule.getStartTime() + " - " + schedule.getEndTime());
+            writer.println("Start z pozycji: " + schedule.getStartLocation());
+            writer.println("-----------------------------------------");
+
+            Location currLocation = schedule.getStartLocation();
+            LocalTime currentTime = schedule.getStartTime();
+
+            for(int i = 0; i < optimalRoute.size(); i++){
+                Attraction a = optimalRoute.get(i);
+                int travelTime = currLocation.travelTime(a.getLocation());
+                currentTime = currentTime.plusMinutes(travelTime);
+
+                if(i>0 || travelTime>0){
+                    writer.printf("  [Czas na dojazd: %d min]\n", travelTime);
+                }
+
+                int waitTime = schedule.getWaitingTime(a, currentTime);
+                currentTime = currentTime.plusMinutes(waitTime);
+
+                LocalTime startTimeOfAttraction = currentTime;
+                currentTime = currentTime.plusMinutes(a.getDurationMinutes());
+
+                writer.printf("%d. %s | Godziny: %s - %s (Czas trwania: %d min)\n", (i + 1), a.getName(), startTimeOfAttraction, currentTime, a.getDurationMinutes());
+                currLocation = a.getLocation();
+            }
+            showWarningAlert("Sukces", "Plan wycieczki został zapisany pomyślnie!");
+        }catch (Exception ex) {
+            showWarningAlert("Błąd", "Nie udało się zapisać pliku: " + ex.getMessage());
+        }
+    }
 }
-}
+

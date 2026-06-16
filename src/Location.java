@@ -71,9 +71,7 @@ public class Location implements Serializable {
      * @return distance between locations
      */
     public double getDistance(Location other){
-        double x = this.x - other.x;
-        double y = this.y - other.y;
-        return x+y;
+        return Math.abs(this.x - other.x)+Math.abs(this.y - other.y);
     }
 
     /**

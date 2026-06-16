@@ -18,11 +18,11 @@ public class TripSchedule {
     private List<Attraction> selectedAttractions;
     private LocalTime startTime;
     private LocalTime endTime;
-    private static LocalTime DEFAULT_START_TIME = LocalTime.of(8, 0);
-    private static LocalTime DEFAULT_END_TIME =  LocalTime.of(22, 0);
+    private static final LocalTime DEFAULT_START_TIME = LocalTime.of(8, 0);
+    private static final LocalTime DEFAULT_END_TIME =  LocalTime.of(22, 0);
     private Location startLocation;
-    private static Location DEFAULT_START_LOCATION = new Location(0.0, 0.0);
-
+    private static final Location DEFAULT_START_LOCATION = new Location(0.0, 0.0);
+    private final int coefficient = 3;
 
     /**
      * Class constructor
@@ -116,6 +116,8 @@ public class TripSchedule {
         return endTime;
     }
 
+    public Location getStartLocation() {return startLocation;}
+    public void setStartLocation(Location startLocation) {this.startLocation = startLocation;}
     /**
      * Calculates waiting time until attraction opens.
      *
@@ -156,7 +158,8 @@ public class TripSchedule {
      */
     public int getPointsOfAttraction(Location startingLocation, Attraction attraction, LocalTime currentTime) {
         int waitTime = getWaitingTime(attraction, currentTime);
-        return (5*startingLocation.travelTime(attraction.getLocation())) + attraction.getDurationMinutes() + waitTime;
+        //return (coefficient*startingLocation.travelTime(attraction.getLocation())) + attraction.getDurationMinutes() + waitTime;
+        return (coefficient*startingLocation.travelTime(attraction.getLocation())) + waitTime; //w liczeniu punktów czas nie ma znaczenia
     }
 
 
