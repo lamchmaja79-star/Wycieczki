@@ -295,4 +295,41 @@ class TripScheduleTest {
 
         assertNotNull(result);
     }
+
+    @Test
+    void testOptimize_ShouldUntangleSuboptimalRoute() {
+        //Definiujemy punkty tak, aby C leżało między A a B
+        // Start jest w (0,0)
+        Attraction attrA = new Attraction("Bliska Atrakcja A", category1, LocalTime.of(8, 0), LocalTime.of(18, 0), 60, new Location(2.0, 2.0));
+
+        // C leży w odległości około 40 jednostek (wymaga auta ze Startu lub z A)
+        Attraction attrC = new Attraction("Środkowa Atrakcja C", category1, LocalTime.of(8, 0), LocalTime.of(18, 0), 60, new Location(30.0, 30.0));
+
+        // B leży bardzo daleko, w odległości kolejnych 50 jednostek od C (wymaga auta)
+        Attraction attrB = new Attraction("Daleka Atrakcja B", category1, LocalTime.of(8, 0), LocalTime.of(18, 0), 60, new Location(80.0, 80.0));
+
+        // Celowo zła trasa "zygzak": Start (0,0) -> A (2,2) -> B (80,80) -> C (30,30)
+        // Turysta jedzie na sam koniec (do B), a potem musi się cofać do środka (do C) -> Dwa gigantyczne skoki autem
+        List<Attraction> badRoute = new ArrayList<>();
+        badRoute.add(attrA);
+        badRoute.add(attrB); // B przed C
+        badRoute.add(attrC);
+
+        List<Attraction> optimizedRoute = tripSchedule.optimize(badRoute);
+
+        assertNotNull(optimizedRoute);
+        assertEquals(3, optimizedRoute.size(), "Trasa powinna zawierać wszystkie 3 atrakcje");
+
+        assertEquals(attrA, optimizedRoute.get(0), "Pierwsza powinna być atrakcja A");
+        assertEquals(attrC, optimizedRoute.get(1), "Algorytm powinien wrzucić środkową atrakcję C na drugie miejsce");
+        assertEquals(attrB, optimizedRoute.get(2), "Najdalsza atrakcja B powinna być na końcu");
+    }
+
+    @Test
+    void testOptimize_WithEmptyRoute() {
+        List<Attraction> emptyRoute = new ArrayList<>();
+        assertDoesNotThrow(() -> tripSchedule.optimize(emptyRoute));
+        assertTrue(tripSchedule.optimize(emptyRoute).isEmpty());
+
+    }
 }

@@ -271,6 +271,92 @@ public class TripSchedule {
             prev = next;
 
         }
+        schedule = optimize(schedule);
         return schedule;
+    }
+
+    /**
+     * Optimizes a full trip schedule.
+     *
+     * @param initialRoute initial trip schedual
+     * @return list of attractions in the best visiting order
+     */
+    public List<Attraction> optimize(List<Attraction> initialRoute) {
+        List<Attraction> optimal = new ArrayList<>(initialRoute);
+        boolean improved = true;
+
+        while (improved) {
+            improved = false;
+
+            for(int i = 0; i < optimal.size() -1; i++) {
+                for(int j = i+1; j < optimal.size(); j++){
+                    List<Attraction> testSchedule = reverseSegment(optimal, i, j);
+
+                    if (validateAndCalculateRoute(testSchedule) < validateAndCalculateRoute(optimal)) {
+                        optimal = testSchedule;
+                        improved = true; // Znaleziono poprawę, szukamy dalej!
+                    }
+                }
+            }
+        }
+        return optimal;
+    }
+
+    /**
+     *  Reverses a segment in the given route
+     *
+     * @param route initial route
+     * @param from beginning of the segment
+     * @param to end of the segment
+     * @return a route with the reversed segment
+     */
+    private List<Attraction> reverseSegment(List<Attraction> route, int from, int to) {
+        List<Attraction> copy = new ArrayList<>(route);
+        while (from < to) {
+            Attraction temp = copy.get(from);
+            copy.set(from, copy.get(to));
+            copy.set(to, temp);
+            from++;
+            to--;
+        }
+        return copy;
+    }
+
+    /**
+     * Simulates the execution of a test trip route, verifies time constraints,
+     * and calculates the total "wasted time" (cost) for the tourist.
+     *
+     * @param testSchedule the mutated list of attractions to evaluate
+     * @return the total calculated cost in minutes (travel time + waiting time + car penalties),
+     * or {@code Integer.MAX_VALUE} if the route violates opening hours or trip end time
+     */
+    private int validateAndCalculateRoute(List<Attraction> testSchedule) {
+        LocalTime currentTime = startTime;
+        Location currentLocation = startLocation;
+        int totalWastedTime = 0;
+
+        int carPenalty = 30;
+
+        for(Attraction a : testSchedule) {
+            if(verify(currentLocation, a, currentTime)){
+                //totalTime += getTimeOfAttraction(currentLocation, a, currentTime);
+                int travel = currentLocation.travelTime(a.getLocation());
+
+                LocalTime arrivalTime = currentTime.plusMinutes(travel);
+                int wait = getWaitingTime(a, arrivalTime);
+                if(currentLocation.getDistance(a.getLocation()) > 20){
+                    totalWastedTime += travel+wait+ carPenalty;
+                }else{
+                    totalWastedTime += travel+wait;
+                }
+
+                int fullDuration = getTimeOfAttraction(currentLocation, a, currentTime);
+                currentTime = currentTime.plusMinutes(fullDuration);
+                currentLocation = a.getLocation();
+            }else{
+                return Integer.MAX_VALUE;
+            };
+        }
+        return totalWastedTime;
     }
 }
