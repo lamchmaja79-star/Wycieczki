@@ -1,4 +1,4 @@
-enum Categories {
+public enum Categories {
     HISTORIA,
     ROZRYWKA,
     SZTUKA,
