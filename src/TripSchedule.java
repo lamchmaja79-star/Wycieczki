@@ -90,12 +90,14 @@ public class TripSchedule {
     /**
      * Sets start time of the trip.
      *
+     * @param startTime new start time
      */
     public void setStartTime(LocalTime startTime) { this.startTime = startTime; }
 
     /**
      * Sets end time of the trip.
      *
+     * @param endTime new end time
      */
     public void setEndTime(LocalTime endTime) { this.endTime = endTime; }
 
@@ -116,8 +118,20 @@ public class TripSchedule {
         return endTime;
     }
 
+    /**
+     * Returns start location.
+     *
+     * @return start location
+     */
     public Location getStartLocation() {return startLocation;}
+
+    /**
+     * Sets start location.
+     *
+     * @param startLocation new starting location
+     */
     public void setStartLocation(Location startLocation) {this.startLocation = startLocation;}
+
     /**
      * Calculates waiting time until attraction opens.
      *
@@ -146,15 +160,15 @@ public class TripSchedule {
         return waitTime + startingLocation.travelTime(attraction.getLocation()) + attraction.getDurationMinutes();
     }
 
-
     /**
-     * Calculates "cost" of visiting an attraction from a given location.
-     * Includes travel time, waiting time, and attraction duration.
+     * Calculates heuristic cost of visiting an attraction.
+     * Includes weighted travel time and waiting time.
      *
      * @param startingLocation current location
      * @param attraction attraction to evaluate
      * @param currentTime current time
-     * @return total estimated cost in minutes (weighted travel + wait + visit time)
+     *
+     * @return estimated cost in minutes
      */
     public int getPointsOfAttraction(Location startingLocation, Attraction attraction, LocalTime currentTime) {
         int waitTime = getWaitingTime(attraction, currentTime);

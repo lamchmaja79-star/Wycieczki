@@ -109,7 +109,6 @@ public class DataManager {
      *
      * @return list of loaded attractions
      */
-    @SuppressWarnings("unchecked")
     public static List<Attraction> loadFromFile() {
         List<Attraction> loadedAttractions = new ArrayList<>();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fileName))) {

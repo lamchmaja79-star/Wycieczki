@@ -416,6 +416,11 @@ public class UserInterface extends Application {
     primaryStage.show();
     }
 
+    /**
+     * Saves the optimized trip schedule to a selected text file.
+     *
+     * @param optimalRoute optimized list of attractions
+     */
     private void saveScheduleToFile(List<Attraction> optimalRoute) {
         javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
         fileChooser.setTitle("Zapisz plan wycieczki");

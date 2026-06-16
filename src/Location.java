@@ -78,7 +78,7 @@ public class Location implements Serializable {
      * Estimates travel time between two locations and selects the best transport method based on distance.
      *
      * - walking: short distances (up to 2km)
-     * - car + parking buffer: long distances
+     * - car and parking buffer: long distances
      *
      * @param other destination location
      * @return travel time in minutes
