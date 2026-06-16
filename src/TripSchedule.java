@@ -80,13 +80,6 @@ public class TripSchedule {
         selectedAttractions.remove(a);
     }
 
-    /** Prints all selected attractions to standard output */
-    public void printSelectedAttractions() {
-        for(Attraction a : selectedAttractions){
-            System.out.println(a);
-        }
-    };
-
     /**
      * Sets start time of the trip.
      *

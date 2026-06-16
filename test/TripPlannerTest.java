@@ -81,4 +81,18 @@ class TripPlannerTest {
         assertTrue(result.isEmpty());
     }
 
+    @Test
+    void sortByDuration() {
+        // Dodajemy atrakcje w losowej kolejności czasowej (120 min, 45 min, 100 min)
+        tripPlanner.addAttraction(a1);
+        tripPlanner.addAttraction(a2);
+        tripPlanner.addAttraction(a3);
+
+        tripPlanner.sortByDuration();
+        List<Attraction> sortedList = tripPlanner.getAllAttractions();
+        assertEquals(3, sortedList.size());
+        assertEquals(a2, sortedList.get(0), "Najkrótsza atrakcja (45 min) powinna być pierwsza.");
+        assertEquals(a3, sortedList.get(1), "Średnia atrakcja (100 min) powinna być druga.");
+        assertEquals(a1, sortedList.get(2), "Najdłuższa atrakcja (120 min) powinna być ostatnia.");
+    }
 }
