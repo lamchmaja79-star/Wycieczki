@@ -305,11 +305,11 @@ public class UserInterface extends Application {
     }
 
     /**
- * Shows a warning alert with given title and message.
- *
- * @param title alert title
- * @param message alert content
- */
+     * Shows a warning alert with given title and message.
+     *
+     * @param title alert title
+     * @param message alert content
+     */
     private void showWarningAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
@@ -379,7 +379,16 @@ public class UserInterface extends Application {
 
         ScrollPane scrollPane = new ScrollPane(listContainer);
         scrollPane.setFitToWidth(true);
-        optimalLayout.setCenter(scrollPane);
+
+        javafx.scene.canvas.Canvas routeMap = createRouteMap(optimalRoute);
+        StackPane mapContainer = new StackPane(routeMap);
+        mapContainer.setStyle("-fx-background-color: #EEEEEE; -fx-padding: 10px;");
+
+        SplitPane splitPane = new SplitPane();
+        splitPane.getItems().addAll(scrollPane, mapContainer);
+        splitPane.setDividerPositions(0.5);
+
+        optimalLayout.setCenter(splitPane);
 
         Button backButton = new Button("Powrót do edycji");
         backButton.setStyle("-fx-cursor: hand; -fx-font-size: 13px; -fx-padding: 8px 20px;");
@@ -461,6 +470,115 @@ public class UserInterface extends Application {
         }catch (Exception ex) {
             showWarningAlert("Błąd", "Nie udało się zapisać pliku: " + ex.getMessage());
         }
+    }
+
+    /**
+     * Draws a map of visited attractions.
+     *
+     * @param optimalRoute selected attractions
+     */
+    private javafx.scene.canvas.Canvas createRouteMap(List<Attraction> optimalRoute) {
+        int width = 500;
+        int height = 500;
+        javafx.scene.canvas.Canvas canvas = new javafx.scene.canvas.Canvas(width, height);
+        javafx.scene.canvas.GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        if (optimalRoute.isEmpty()) {
+            gc.setFill(javafx.scene.paint.Color.web("#F5F5F5"));
+            gc.fillRect(0, 0, width, height);
+            return canvas;
+        }
+
+        Location startLoc = schedule.getStartLocation();
+        double minX = startLoc.getX();
+        double maxX = startLoc.getX();
+        double minY = startLoc.getY();
+        double maxY = startLoc.getY();
+
+        for (Attraction attr : optimalRoute) {
+            double x = attr.getLocation().getX();
+            double y = attr.getLocation().getY();
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+        }
+
+        double dataWidth = maxX - minX;
+        double dataHeight = maxY - minY;
+
+        if (dataWidth == 0) dataWidth = 1.0;
+        if (dataHeight == 0) dataHeight = 1.0;
+
+        double padding = 50.0; // bezpieczny margines od krawędzi okna w pikselach
+
+        // Skala mówi, ile pikseli przypada na jedną jednostkę współrzędnych
+        double scaleX = (width - 2 * padding) / dataWidth;
+        double scaleY = (height - 2 * padding) / dataHeight;
+        double scale = Math.min(scaleX, scaleY);
+
+
+        double mapXOffset = padding + (width - 2 * padding - dataWidth * scale) / 2.0;
+        double mapYOffset = padding + (height - 2 * padding - dataHeight * scale) / 2.0;
+
+        double finalMinX = minX;
+        java.util.function.Function<Double, Double> toPixelX = (x) -> mapXOffset + (x - finalMinX) * scale;
+        double finalMinY = minY;
+        java.util.function.Function<Double, Double> toPixelY = (y) -> height - (mapYOffset + (y - finalMinY) * scale); // Odwracamy Y
+
+        gc.setFill(javafx.scene.paint.Color.web("#F9F9F9"));
+        gc.fillRect(0, 0, width, height);
+
+        gc.setStroke(javafx.scene.paint.Color.web("#EAEAEA"));
+        gc.setLineWidth(1);
+        for (int i = 0; i <= width; i += 25) {
+            gc.strokeLine(i, 0, i, height);
+            gc.strokeLine(0, i, width, i);
+        }
+
+        gc.setStroke(javafx.scene.paint.Color.web("#2E7D32"));
+        gc.setLineWidth(3);
+
+        double lastX = toPixelX.apply(startLoc.getX());
+        double lastY = toPixelY.apply(startLoc.getY());
+
+        for (Attraction attr : optimalRoute) {
+            double nextX = toPixelX.apply(attr.getLocation().getX());
+            double nextY = toPixelY.apply(attr.getLocation().getY());
+
+            gc.strokeLine(lastX, lastY, nextX, nextY);
+
+            lastX = nextX;
+            lastY = nextY;
+        }
+
+        double pStartX = toPixelX.apply(startLoc.getX());
+        double pStartY = toPixelY.apply(startLoc.getY());
+        gc.setFill(javafx.scene.paint.Color.web("#D32F2F"));
+        gc.fillOval(pStartX - 7, pStartY - 7, 14, 14);
+        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 12));
+        gc.fillText("START", pStartX + 12, pStartY + 4);
+
+        gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.NORMAL, 11));
+        for (int i = 0; i < optimalRoute.size(); i++) {
+            Attraction attr = optimalRoute.get(i);
+            double x = toPixelX.apply(attr.getLocation().getX());
+            double y = toPixelY.apply(attr.getLocation().getY());
+
+            // Kropka
+            gc.setFill(javafx.scene.paint.Color.web("#1976D2"));
+            gc.fillOval(x - 6, y - 6, 12, 12);
+
+            // Biały numer wewnątrz lub tuż obok kropki
+            gc.setFill(javafx.scene.paint.Color.WHITE);
+            gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 10));
+            gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
+
+            // Rysujemy sam numer (np. "1", "2") dokładnie w środku kropki
+            gc.fillText(String.valueOf(i + 1), x, y + 3);
+        }
+
+        return canvas;
     }
 }
 
