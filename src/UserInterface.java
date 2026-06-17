@@ -409,7 +409,7 @@ public class UserInterface extends Application {
         bottomPanel.setPadding(new Insets(15, 0, 0, 0));
         optimalLayout.setBottom(bottomPanel);
 
-        Scene optimalScene = new Scene(optimalLayout, 1300, 800);
+        Scene optimalScene = new Scene(optimalLayout, 1000, 600);
         primaryStage.setScene(optimalScene);
     }
 
@@ -417,7 +417,7 @@ public class UserInterface extends Application {
      * Configures and displays the main application window.
      */
     private void setupStage() {
-    mainScene = new Scene(mainLayout, 1300, 1100);
+    mainScene = new Scene(mainLayout, 1000, 600);
 
     primaryStage.setTitle("Planowanie wycieczki");
     primaryStage.setScene(mainScene);
