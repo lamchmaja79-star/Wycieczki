@@ -226,7 +226,7 @@ public class UserInterface extends Application {
         attractionsPane.setAlignment(Pos.CENTER);
 
         for (Attraction attraction : attractions) {
-            Button attractionButton = new Button(attraction.getName() + " (" + attraction.getDurationMinutes() + " min)");
+            Button attractionButton = new Button(attraction.getName() + " (" + attraction.getDurationMinutes() + " min) "+attraction.getLocation());
             attractionButton.setStyle("-fx-cursor: hand;");
 
             attractionButton.setOnAction(e -> tryAddAttraction(attraction));
@@ -409,7 +409,7 @@ public class UserInterface extends Application {
         bottomPanel.setPadding(new Insets(15, 0, 0, 0));
         optimalLayout.setBottom(bottomPanel);
 
-        Scene optimalScene = new Scene(optimalLayout, 1100, 600);
+        Scene optimalScene = new Scene(optimalLayout, 1300, 800);
         primaryStage.setScene(optimalScene);
     }
 
@@ -417,7 +417,7 @@ public class UserInterface extends Application {
      * Configures and displays the main application window.
      */
     private void setupStage() {
-    mainScene = new Scene(mainLayout, 1100, 600);
+    mainScene = new Scene(mainLayout, 1300, 1100);
 
     primaryStage.setTitle("Planowanie wycieczki");
     primaryStage.setScene(mainScene);
