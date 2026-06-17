@@ -510,8 +510,7 @@ public class UserInterface extends Application {
         if (dataWidth == 0) dataWidth = 1.0;
         if (dataHeight == 0) dataHeight = 1.0;
 
-        double padding = 50.0; // bezpieczny margines od krawędzi okna w pikselach
-
+        double padding = 50.0;
         // Skala mówi, ile pikseli przypada na jedną jednostkę współrzędnych
         double scaleX = (width - 2 * padding) / dataWidth;
         double scaleY = (height - 2 * padding) / dataHeight;
@@ -565,16 +564,13 @@ public class UserInterface extends Application {
             double x = toPixelX.apply(attr.getLocation().getX());
             double y = toPixelY.apply(attr.getLocation().getY());
 
-            // Kropka
             gc.setFill(javafx.scene.paint.Color.web("#1976D2"));
             gc.fillOval(x - 6, y - 6, 12, 12);
 
-            // Biały numer wewnątrz lub tuż obok kropki
             gc.setFill(javafx.scene.paint.Color.WHITE);
             gc.setFont(javafx.scene.text.Font.font("Arial", javafx.scene.text.FontWeight.BOLD, 10));
             gc.setTextAlign(javafx.scene.text.TextAlignment.CENTER);
 
-            // Rysujemy sam numer (np. "1", "2") dokładnie w środku kropki
             gc.fillText(String.valueOf(i + 1), x, y + 3);
         }
 

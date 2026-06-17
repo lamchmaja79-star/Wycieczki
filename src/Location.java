@@ -113,7 +113,6 @@ public class Location implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Location)) return false;
         Location other = (Location) o;
-        // Porównujemy wartości współrzędnych x oraz y
         return Double.compare(other.x, x) == 0 && Double.compare(other.y, y) == 0;
     }
 

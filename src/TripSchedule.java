@@ -165,8 +165,7 @@ public class TripSchedule {
      */
     public int getPointsOfAttraction(Location startingLocation, Attraction attraction, LocalTime currentTime) {
         int waitTime = getWaitingTime(attraction, currentTime);
-        //return (coefficient*startingLocation.travelTime(attraction.getLocation())) + attraction.getDurationMinutes() + waitTime;
-        return (coefficient*startingLocation.travelTime(attraction.getLocation())) + waitTime; //w liczeniu punktów czas nie ma znaczenia
+        return (coefficient*startingLocation.travelTime(attraction.getLocation())) + waitTime; //w liczeniu punktów czas trwania nie ma znaczenia
     }
 
 
@@ -339,7 +338,6 @@ public class TripSchedule {
 
         for(Attraction a : testSchedule) {
             if(verify(currentLocation, a, currentTime)){
-                //totalTime += getTimeOfAttraction(currentLocation, a, currentTime);
                 int travel = currentLocation.travelTime(a.getLocation());
 
                 LocalTime arrivalTime = currentTime.plusMinutes(travel);
