@@ -294,7 +294,7 @@ public class TripSchedule {
 
                     if (validateAndCalculateRoute(testSchedule) < validateAndCalculateRoute(optimal)) {
                         optimal = testSchedule;
-                        improved = true; // Znaleziono poprawę, szukamy dalej!
+                        improved = true;
                     }
                 }
             }
